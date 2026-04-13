@@ -20,6 +20,95 @@ jobs:
     name: Setup ${{ inputs.environment }}
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
+    env:
+      TF_VAR_cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set config
+        id: config
+        run: |
+          if [[ "${{ inputs.environment }}" == "PROD" ]]; then
+            echo "env_file=prod" >> "$GITHUB_OUTPUT"
+            echo "state_key=prod/terraform.tfstate" >> "$GITHUB_OUTPUT"
+          else
+            echo "env_file=dev" >> "$GITHUB_OUTPUT"
+            echo "state_key=dev/terraform.tfstate" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: us-east-1
+
+      # Bootstrap: create state bucket if it doesn't exist
+      - name: Create Tofu state bucket
+        run: |
+          if aws s3api head-bucket --bucket logiforma-tfstate 2>/dev/null; then
+            echo "✓ State bucket already exists"
+          else
+            aws s3api create-bucket --bucket logiforma-tfstate --region us-east-1
+            aws s3api put-bucket-versioning --bucket logiforma-tfstate \
+              --versioning-configuration Status=Enabled
+            aws s3api put-public-access-block --bucket logiforma-tfstate \
+              --public-access-block-configuration \
+              "BlockPublicAcls=true,IgnorePublicAcls=true,BlockPublicPolicy=true,RestrictPublicBuckets=true"
+            echo "✓ State bucket created with versioning"
+          fi
+
+      - uses: opentofu/setup-opentofu@v1
+        with:
+          tofu_version: 1.9.0
+
+      - name: Tofu Init
+        working-directory: infra
+        run: |
+          tofu init \
+            -backend-config="key=${{ steps.config.outputs.state_key }}"
+
+      - name: Tofu Plan
+        working-directory: infra
+        run: |
+          tofu plan \
+            -var-file="environments/${{ steps.config.outputs.env_file }}.tfvars" \
+            -out=tfplan
+
+      - name: Tofu Apply
+        working-directory: infra
+        run: |
+          tofu apply -auto-approve tfplan
+
+      - name: Summary
+        working-directory: infra
+        run: |
+          echo "══════════════════════════════════════════════════"
+          echo "  Infrastructure ready"
+          echo "══════════════════════════════════════════════════"
+          tofu output
+          echo "══════════════════════════════════════════════════"
+name: Setup Infrastructure
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Environment to set up"
+        required: true
+        type: choice
+        options:
+          - PROD
+          - DEV
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  setup:
+    name: Setup ${{ inputs.environment }}
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
     steps:
       - name: Set config
         id: config
