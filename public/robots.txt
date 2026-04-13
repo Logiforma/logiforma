@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://logiforma.com/sitemap.xml
