@@ -145,7 +145,7 @@ onMounted(() => setupScrollAnimations())
             Logiforma<br />
             WeWork - Manyata Redwood,<br />
             9th Floor, Block D3, Manyata Tech Park,<br />
-            Bangalore - 560064, Karnataka, India
+            Bangalore - 560045, Karnataka, India
           </address>
         </div>
       </div>
