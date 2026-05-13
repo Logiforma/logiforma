@@ -90,9 +90,13 @@ const links = {
 
 <style scoped>
 .footer {
-  border-top: 1px solid var(--color-border);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
   padding: 80px 0 40px;
-  background: var(--color-bg);
+  background: rgba(8, 8, 10, 0.7);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  position: relative;
+  z-index: 1;
 }
 
 /* Top section: brand + address side by side */

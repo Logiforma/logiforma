@@ -77,17 +77,23 @@ onMounted(() => {
 
 <template>
   <div class="home-page">
-    <!-- Hero -->
+    <!-- Hero — full-viewport overlay on MorphingBackground -->
     <section class="hero-section">
-      <HeroAnimation />
       <div class="hero-content container">
+        <h1 class="hero-title">
+          Transform your ERP ecosystem<br />
+          through intelligent automation.
+        </h1>
         <p class="hero-desc">
-          Transform your ERP ecosystem through intelligent automation,
-          seamless integrations and data-driven insights.
+          Seamless integrations and data-driven insights
+          for the modern enterprise.
         </p>
         <div class="hero-buttons">
-          <RouterLink to="/contact" class="btn btn-primary">Get Started</RouterLink>
-          <RouterLink to="/services" class="btn btn-outline">Explore Platform</RouterLink>
+          <RouterLink to="/contact" class="btn btn-pill-light">
+            <span>Get Started</span>
+            <span class="btn-arrow" aria-hidden="true">→</span>
+          </RouterLink>
+          <RouterLink to="/services" class="btn btn-pill-ghost">Explore Platform</RouterLink>
         </div>
       </div>
     </section>
@@ -167,42 +173,109 @@ onMounted(() => {
 </template>
 
 <style scoped>
-/* Hero */
+/* Hero — left-aligned editorial layout from Stitch design 1 */
 .hero-section {
   position: relative;
   min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  /* transparent so morphing 3D background shows */
+  background: transparent;
 }
 
 .hero-content {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  position: relative;
   z-index: 3;
-  text-align: center;
-  padding: 24px 20px 48px;
+  max-width: 720px;
+  padding: 120px 24px 80px;
+  text-align: left;
+}
+
+.hero-title {
+  font-size: clamp(2.5rem, 6.5vw, 5.5rem);
+  font-weight: 700;
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  color: var(--color-white);
+  margin-bottom: 28px;
+  text-shadow: 0 4px 40px rgba(0, 0, 0, 0.5);
 }
 
 .hero-desc {
-  font-size: clamp(1rem, 2vw, 1.25rem);
-  color: var(--color-text-muted);
-  max-width: 560px;
-  margin: 0 auto 32px;
-  line-height: 1.7;
+  font-size: clamp(1rem, 1.6vw, 1.25rem);
+  color: rgba(240, 236, 232, 0.78);
+  max-width: 480px;
+  margin: 0 0 40px;
+  line-height: 1.6;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.4);
 }
 
 .hero-buttons {
   display: flex;
-  gap: 16px;
-  justify-content: center;
+  gap: 14px;
   flex-wrap: wrap;
+}
+
+/* White pill CTA — Stitch design language */
+.btn-pill-light {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 12px 10px 28px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  background: var(--color-white);
+  color: #0a0a0a;
+  border-radius: 999px;
+  transition: all var(--transition);
+}
+
+.btn-pill-light:hover {
+  background: #f5efe7;
+  transform: translateY(-1px);
+  box-shadow: 0 12px 40px rgba(255, 255, 255, 0.2);
+}
+
+.btn-pill-light .btn-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  background: #0a0a0a;
+  color: var(--color-white);
+  font-size: 0.875rem;
+}
+
+.btn-pill-ghost {
+  display: inline-flex;
+  align-items: center;
+  padding: 12px 26px;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--color-white);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: all var(--transition);
+}
+
+.btn-pill-ghost:hover {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.3);
 }
 
 /* Stats */
 .stats-section {
   padding: 80px 0;
-  border-top: 1px solid var(--color-border);
-  border-bottom: 1px solid var(--color-border);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(10, 10, 12, 0.55);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
 }
 
 .stats-grid {
@@ -242,16 +315,18 @@ onMounted(() => {
 }
 
 .pillar-card {
-  background: var(--color-bg-card);
-  border: 1px solid var(--color-border);
+  background: rgba(20, 20, 22, 0.55);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: var(--radius);
   padding: 40px 32px;
   transition: all var(--transition);
 }
 
 .pillar-card:hover {
-  background: var(--color-bg-card-hover);
-  border-color: var(--color-border-light);
+  background: rgba(28, 28, 32, 0.7);
+  border-color: rgba(255, 255, 255, 0.18);
   transform: translateY(-4px);
 }
 
@@ -288,16 +363,18 @@ onMounted(() => {
 }
 
 .service-card {
-  background: var(--color-bg-card);
-  border: 1px solid var(--color-border);
+  background: rgba(20, 20, 22, 0.55);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: var(--radius);
   padding: 32px;
   transition: all var(--transition);
 }
 
 .service-card:hover {
-  background: var(--color-bg-card-hover);
-  border-color: var(--color-border-light);
+  background: rgba(28, 28, 32, 0.7);
+  border-color: rgba(255, 255, 255, 0.18);
 }
 
 .service-number {
@@ -332,8 +409,10 @@ onMounted(() => {
 .cta-card {
   text-align: center;
   padding: 80px 40px;
-  background: var(--color-bg-card);
-  border: 1px solid var(--color-border);
+  background: rgba(20, 20, 22, 0.55);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 20px;
   position: relative;
   overflow: hidden;

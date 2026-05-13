@@ -39,10 +39,16 @@ html {
 
 body {
   font-family: var(--font-family);
-  background-color: var(--color-bg);
+  /* transparent so the fixed MorphingBackground canvas shows through */
+  background-color: transparent;
   color: var(--color-text);
   line-height: 1.6;
   overflow-x: hidden;
+}
+
+/* Solid fallback color rendered behind the WebGL canvas */
+html {
+  background-color: var(--color-bg);
 }
 
 a {
