@@ -45,7 +45,6 @@ let frameId = 0
 let scrollProgress = 0       // raw 0..1
 let smoothedProgress = 0     // eased 0..1
 const clock = new THREE.Clock()
-let resizeObserver: ResizeObserver | null = null
 let visibilityHandler: (() => void) | null = null
 let scrollHandler: (() => void) | null = null
 let prefersReducedMotion = false
@@ -426,7 +425,6 @@ onBeforeUnmount(() => {
   if (scrollHandler) window.removeEventListener('scroll', scrollHandler)
   window.removeEventListener('resize', onResize)
   if (visibilityHandler) document.removeEventListener('visibilitychange', visibilityHandler)
-  resizeObserver?.disconnect()
 
   // Dispose Three resources
   if (knot) {
