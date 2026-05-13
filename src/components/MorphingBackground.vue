@@ -55,6 +55,8 @@ let camera: THREE.PerspectiveCamera | null = null
 let knot: THREE.Mesh | null = null
 let sphere: THREE.Mesh | null = null
 let starField: THREE.Points | null = null
+let ringGroup: THREE.Group | null = null
+let ringOpacity = 0          // eased ring-group opacity (home hero only)
 let frameId = 0
 let scrollProgress = 0       // raw 0..1 (home only)
 let smoothedProgress = 0     // eased 0..1
@@ -235,6 +237,39 @@ function initScene(canvas: HTMLCanvasElement) {
   sphere.scale.setScalar(0.01) // hidden at start
   scene.add(sphere)
 
+  // --- Ring group (home hero, State A) — multiple overlapping glass torus rings
+  // Inspired by screen 1.png: 3 rings at different tilt angles & radii.
+  ringGroup = new THREE.Group()
+  ringGroup.position.set(1.4, 0, 0)
+  const ringDefs = [
+    { r: 2.0, tube: 0.34, rx: 0,              ry: 0,             rz: 0 },
+    { r: 1.6, tube: 0.32, rx: Math.PI / 3.5,  ry: Math.PI / 5,  rz: 0 },
+    { r: 2.4, tube: 0.36, rx: -Math.PI / 5,   ry: Math.PI / 2.8, rz: Math.PI / 10 },
+  ]
+  for (const rd of ringDefs) {
+    const rg = new THREE.TorusGeometry(rd.r, rd.tube, isMobile ? 24 : 42, isMobile ? 64 : 110)
+    const rm = new THREE.MeshPhysicalMaterial({
+      color: new THREE.Color('#c8d2db'),
+      metalness: 0.1,
+      roughness: 0.04,
+      transmission: 0.98,
+      thickness: 1.1,
+      ior: 1.52,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.03,
+      iridescence: 0.25,
+      iridescenceIOR: 1.3,
+      transparent: true,
+      opacity: 0,
+      side: THREE.DoubleSide,
+      envMapIntensity: 1.5,
+    })
+    const rm_mesh = new THREE.Mesh(rg, rm)
+    rm_mesh.rotation.set(rd.rx, rd.ry, rd.rz)
+    ringGroup.add(rm_mesh)
+  }
+  scene.add(ringGroup)
+
   // --- Star field (State C) ---------------------------------------------
   starField = buildStarfield()
   scene.add(starField)
@@ -304,6 +339,10 @@ function tick() {
   const dt = clock.getDelta()
   const t = clock.elapsedTime
 
+  // ----- Ring group opacity (home only, fades out as scroll increases) ----
+  const ringTarget = isHome ? Math.max(0, 1 - p / 0.28) : 0
+  ringOpacity += (ringTarget - ringOpacity) * 0.07
+
   // ----- Background color crossfade ----
   if (scene.background instanceof THREE.Color) {
     lerp3Color(scene.background, BG_A, BG_B, BG_C, p)
@@ -321,7 +360,9 @@ function tick() {
   if (knot) {
     const mat = knot.material as THREE.MeshPhysicalMaterial
     // visibility envelope: peak at A (1.0), dip at B (0.15), peak at C (1.0)
-    const knotPresence = lerp3(1.0, 0.0, 1.0, p)
+    // On home page, knot fades in as the rings fade out (first 25% of scroll)
+    const knotFadeIn = isHome ? smoothstep(Math.min(1, p / 0.25)) : 1.0
+    const knotPresence = lerp3(1.0, 0.0, 1.0, p) * knotFadeIn
     const baseScale = lerp3(1.45, 0.7, 1.15, p)
     knot.scale.setScalar(baseScale * Math.max(knotPresence, 0.001))
 
@@ -349,6 +390,20 @@ function tick() {
     lerp3Color(mat.color, MAT_A_COLOR, MAT_B_COLOR, MAT_C_COLOR, p)
     mat.opacity = Math.max(knotPresence, 0.001)
     mat.needsUpdate = false // physical material handles updates internally
+  }
+
+  // ----- Ring group (home hero) ----
+  if (ringGroup) {
+    ringGroup.position.y = Math.sin(t * 0.45) * 0.12
+    ringGroup.rotation.y += dt * 0.035
+    let ri = 0
+    for (const child of ringGroup.children) {
+      const rm = child as THREE.Mesh
+      rm.rotation.x += dt * (0.12 + ri * 0.06)
+      rm.rotation.y += dt * (0.09 + ri * 0.04)
+      ;(rm.material as THREE.MeshPhysicalMaterial).opacity = ringOpacity
+      ri++
+    }
   }
 
   // ----- Sphere transform / fade ----
@@ -469,6 +524,14 @@ onBeforeUnmount(() => {
   if (visibilityHandler) document.removeEventListener('visibilitychange', visibilityHandler)
 
   // Dispose Three resources
+  if (ringGroup) {
+    ringGroup.children.forEach((child) => {
+      const m = child as THREE.Mesh
+      m.geometry.dispose()
+      ;(m.material as THREE.Material).dispose()
+    })
+    ringGroup = null
+  }
   if (knot) {
     knot.geometry.dispose()
     ;(knot.material as THREE.Material).dispose()
