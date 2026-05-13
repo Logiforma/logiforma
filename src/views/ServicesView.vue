@@ -143,7 +143,6 @@ onMounted(() => setupScrollAnimations())
 <style scoped>
 .page-hero {
   padding: 160px 0 80px;
-  border-bottom: 1px solid var(--color-border);
 }
 
 .page-hero-title {
@@ -152,34 +151,43 @@ onMounted(() => setupScrollAnimations())
   line-height: 1.15;
   letter-spacing: -0.02em;
   margin-bottom: 20px;
+  color: var(--color-white);
+  text-shadow: 0 4px 32px rgba(0, 0, 0, 0.5);
 }
 
 .page-hero-desc {
   font-size: 1.125rem;
-  color: var(--color-text-muted);
+  color: rgba(240, 236, 232, 0.75);
   max-width: 640px;
   line-height: 1.7;
 }
 
+/* Services — card grid instead of divider rows */
 .services-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
 }
 
 .service-row {
-  padding: 48px 0;
-  border-bottom: 1px solid var(--color-border);
+  padding: 36px 32px;
+  background: rgba(10, 10, 12, 0.80);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius);
+  transition: border-color var(--transition), transform var(--transition);
 }
 
-.service-row:first-child {
-  border-top: 1px solid var(--color-border);
+.service-row:hover {
+  border-color: rgba(255, 255, 255, 0.16);
+  transform: translateY(-2px);
 }
 
 .service-header {
   display: flex;
   align-items: baseline;
-  gap: 16px;
+  gap: 12px;
   margin-bottom: 12px;
 }
 
@@ -191,15 +199,15 @@ onMounted(() => setupScrollAnimations())
 }
 
 .service-title {
-  font-size: 1.375rem;
+  font-size: 1.25rem;
   font-weight: 700;
+  color: var(--color-white);
 }
 
 .service-desc {
-  font-size: 1rem;
-  color: var(--color-text-muted);
+  font-size: 0.9375rem;
+  color: rgba(240, 236, 232, 0.70);
   line-height: 1.7;
-  max-width: 720px;
   margin-bottom: 20px;
 }
 
@@ -210,16 +218,17 @@ onMounted(() => setupScrollAnimations())
 }
 
 .feature-tag {
-  padding: 6px 14px;
-  font-size: 0.8125rem;
-  background: var(--color-bg-card);
-  border: 1px solid var(--color-border);
+  padding: 5px 12px;
+  font-size: 0.8rem;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 20px;
-  color: var(--color-text-muted);
+  color: rgba(240, 236, 232, 0.65);
 }
 
+/* Industries */
 .industries-section {
-  background: var(--color-bg-elevated);
+  background: transparent;
 }
 
 .section-header {
@@ -234,14 +243,16 @@ onMounted(() => setupScrollAnimations())
 
 .industry-card {
   padding: 40px 32px;
-  background: var(--color-bg-card);
-  border: 1px solid var(--color-border);
+  background: rgba(10, 10, 12, 0.80);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--radius);
   transition: all var(--transition);
 }
 
 .industry-card:hover {
-  border-color: var(--color-border-light);
+  border-color: rgba(255, 255, 255, 0.16);
   transform: translateY(-2px);
 }
 
@@ -249,21 +260,25 @@ onMounted(() => setupScrollAnimations())
   font-size: 1.25rem;
   font-weight: 700;
   margin-bottom: 12px;
+  color: var(--color-white);
 }
 
 .industry-card p {
   font-size: 0.9375rem;
-  color: var(--color-text-muted);
+  color: rgba(240, 236, 232, 0.70);
   line-height: 1.7;
 }
 
+/* Inline CTA */
 .inline-cta {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 48px;
-  background: var(--color-bg-card);
-  border: 1px solid var(--color-border);
+  background: rgba(10, 10, 12, 0.80);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--radius);
   gap: 32px;
 }
@@ -272,11 +287,18 @@ onMounted(() => setupScrollAnimations())
   font-size: 1.5rem;
   font-weight: 700;
   margin-bottom: 8px;
+  color: var(--color-white);
 }
 
 .inline-cta p {
   font-size: 0.9375rem;
-  color: var(--color-text-muted);
+  color: rgba(240, 236, 232, 0.70);
+}
+
+@media (max-width: 900px) {
+  .services-list {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 768px) {

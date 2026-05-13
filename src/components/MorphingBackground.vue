@@ -43,7 +43,7 @@ const supportsWebGL = ref(true)
 const ROUTE_PROGRESS: Record<string, number> = {
   '/': -1,          // special: scroll-driven
   '/about': 0.08,   // glass torus, dark — same feel as hero but slightly shifted
-  '/services': 0.55,// deep into the iridescent/cream phase — warm & distinctive
+  '/services': 0.12,// glass torus tilted — dark with strong reflections, good contrast
   '/pricing': 0.82, // heading into chrome — cooler dark
   '/contact': 0.92, // almost full chrome / starfield
 }
