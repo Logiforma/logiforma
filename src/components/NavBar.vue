@@ -209,13 +209,15 @@ onUnmounted(() => {
     padding: 100px 32px 32px;
     gap: 4px;
     transform: translateX(100%);
-    transition: transform var(--transition);
+    visibility: hidden;
+    transition: transform var(--transition), visibility var(--transition);
     border-left: 1px solid var(--color-border);
     border-radius: 0;
   }
 
   .nav-links.open {
     transform: translateX(0);
+    visibility: visible;
   }
 
   .nav-link {
