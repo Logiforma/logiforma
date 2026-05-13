@@ -50,32 +50,47 @@ onUnmounted(() => {
         <span></span>
       </button>
 
-      <div class="nav-links" :class="{ open: mobileOpen }">
+      <div class="nav-links desktop-links">
         <RouterLink
           v-for="link in navLinks"
           :key="link.path"
           :to="link.path"
           class="nav-link"
           :class="{ active: route.path === link.path }"
-          @click="closeMobile"
         >
           {{ link.name }}
         </RouterLink>
-        <RouterLink to="/contact" class="btn btn-primary nav-cta" @click="closeMobile">
+        <RouterLink to="/contact" class="btn btn-primary nav-cta">
           Get Started
         </RouterLink>
       </div>
     </div>
   </nav>
+
+  <!-- Mobile full-screen overlay -->
+  <Transition name="overlay">
+    <div v-if="mobileOpen" class="mobile-overlay" @click.self="closeMobile">
+      <div class="overlay-panel">
+        <button class="overlay-close" @click="closeMobile" aria-label="Close menu">✕</button>
+        <RouterLink
+          v-for="link in navLinks"
+          :key="link.path"
+          :to="link.path"
+          class="overlay-link"
+          :class="{ active: route.path === link.path }"
+          @click="closeMobile"
+        >
+          {{ link.name }}
+        </RouterLink>
+        <RouterLink to="/contact" class="overlay-cta" @click="closeMobile">
+          Get Started
+        </RouterLink>
+      </div>
+    </div>
+  </Transition>
 </template>
 
 <style scoped>
-/*
- * Stitch-inspired "glass pill" navigation.
- * The bar is a centered, rounded-full container with a translucent dark
- * surface and backdrop blur — visible against both the dark hero and the
- * light editorial mid-section thanks to the strong blur + subtle border.
- */
 .navbar {
   position: fixed;
   top: 20px;
@@ -121,7 +136,7 @@ onUnmounted(() => {
   width: auto;
 }
 
-.nav-links {
+.desktop-links {
   display: flex;
   align-items: center;
   gap: 4px;
@@ -157,6 +172,7 @@ onUnmounted(() => {
   transform: none;
 }
 
+/* Hamburger */
 .mobile-toggle {
   display: none;
   flex-direction: column;
@@ -186,6 +202,105 @@ onUnmounted(() => {
   transform: rotate(-45deg) translate(5px, -5px);
 }
 
+/* ── Mobile full-screen overlay ── */
+.mobile-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+}
+
+.overlay-panel {
+  width: 100%;
+  background: rgba(10, 10, 13, 0.96);
+  backdrop-filter: blur(32px) saturate(160%);
+  -webkit-backdrop-filter: blur(32px) saturate(160%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 48px 32px 64px;
+}
+
+.overlay-close {
+  position: absolute;
+  top: 28px;
+  right: 28px;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--color-white);
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--transition);
+}
+
+.overlay-close:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.overlay-link {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: rgba(240, 236, 232, 0.7);
+  letter-spacing: -0.02em;
+  padding: 10px 24px;
+  border-radius: 12px;
+  transition: color var(--transition), background var(--transition);
+  width: 100%;
+  text-align: center;
+}
+
+.overlay-link:hover,
+.overlay-link.active {
+  color: var(--color-white);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.overlay-cta {
+  margin-top: 24px;
+  padding: 16px 48px;
+  font-size: 1rem;
+  font-weight: 700;
+  background: var(--color-white);
+  color: #0a0a0a;
+  border-radius: 999px;
+  transition: background var(--transition), transform var(--transition);
+}
+
+.overlay-cta:hover {
+  background: #f0ece8;
+  transform: scale(1.02);
+}
+
+/* Overlay enter/leave transition */
+.overlay-enter-active,
+.overlay-leave-active {
+  transition: opacity 0.25s ease;
+}
+
+.overlay-enter-from,
+.overlay-leave-to {
+  opacity: 0;
+}
+
+.overlay-enter-active .overlay-panel,
+.overlay-leave-active .overlay-panel {
+  transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.overlay-enter-from .overlay-panel,
+.overlay-leave-to .overlay-panel {
+  transform: translateY(16px);
+}
+
 @media (max-width: 768px) {
   .navbar {
     border-radius: 28px;
@@ -196,41 +311,8 @@ onUnmounted(() => {
     display: flex;
   }
 
-  .nav-links {
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: 280px;
-    height: 100vh;
-    background: rgba(15, 15, 18, 0.92);
-    backdrop-filter: blur(24px);
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 100px 32px 32px;
-    gap: 4px;
-    transform: translateX(100%);
-    visibility: hidden;
-    transition: transform var(--transition), visibility var(--transition);
-    border-left: 1px solid var(--color-border);
-    border-radius: 0;
-  }
-
-  .nav-links.open {
-    transform: translateX(0);
-    visibility: visible;
-  }
-
-  .nav-link {
-    width: 100%;
-    padding: 12px 16px;
-    font-size: 1rem;
-  }
-
-  .nav-cta {
-    margin-left: 0;
-    margin-top: 16px;
-    width: 100%;
-    text-align: center;
+  .desktop-links {
+    display: none;
   }
 }
 </style>
