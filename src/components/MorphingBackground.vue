@@ -28,11 +28,25 @@
  *   - Pauses rAF loop when document is hidden.
  *   - Disables `prefers-reduced-motion` interactions (still renders static).
  */
-import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { ref, onMounted, onBeforeUnmount, watch } from 'vue'
+import { useRoute } from 'vue-router'
 import * as THREE from 'three'
 
+const route = useRoute()
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 const supportsWebGL = ref(true)
+
+/**
+ * Fixed morph progress for each non-home route.
+ * Home uses scroll-driven progress; all others freeze at a distinctive state.
+ */
+const ROUTE_PROGRESS: Record<string, number> = {
+  '/': -1,          // special: scroll-driven
+  '/about': 0.08,   // glass torus, dark — same feel as hero but slightly shifted
+  '/services': 0.55,// deep into the iridescent/cream phase — warm & distinctive
+  '/pricing': 0.82, // heading into chrome — cooler dark
+  '/contact': 0.92, // almost full chrome / starfield
+}
 
 // --- Three globals (module-scoped to this component instance) -----------
 let renderer: THREE.WebGLRenderer | null = null
@@ -42,8 +56,9 @@ let knot: THREE.Mesh | null = null
 let sphere: THREE.Mesh | null = null
 let starField: THREE.Points | null = null
 let frameId = 0
-let scrollProgress = 0       // raw 0..1
+let scrollProgress = 0       // raw 0..1 (home only)
 let smoothedProgress = 0     // eased 0..1
+let targetProgress = 0       // route-resolved target
 const clock = new THREE.Clock()
 let visibilityHandler: (() => void) | null = null
 let scrollHandler: (() => void) | null = null
@@ -168,14 +183,15 @@ function initScene(canvas: HTMLCanvasElement) {
   rimLight.position.set(-6, -3, -4)
   scene.add(rimLight)
 
-  // --- Primary morph subject: a torus knot (used at State A & State C) ---
+  // Torus knot — geometry tuned to match screen 1.png open glass loop
+  // p=2, q=1 creates wider, graceful sweeping loops vs the star-pretzel of p=2,q=3
   const knotGeom = new THREE.TorusKnotGeometry(
-    1.1,   // radius
-    0.42,  // tube
-    isMobile ? 180 : 280, // tubularSegments
-    isMobile ? 18 : 28,   // radialSegments
-    2,     // p
-    3      // q
+    1.5,   // radius — larger, fills the viewport
+    0.50,  // tube — thicker for glass refraction effect
+    isMobile ? 200 : 320, // tubularSegments
+    isMobile ? 20 : 32,   // radialSegments
+    2,     // p — 2 loops
+    1      // q — 1 wind (open, oval loops like screen 1.png)
   )
   const knotMat = new THREE.MeshPhysicalMaterial({
     color: MAT_A_COLOR.clone(),
@@ -279,9 +295,10 @@ function tick() {
   if (!renderer || !scene || !camera) return
   frameId = requestAnimationFrame(tick)
 
-  // Ease the raw scroll progress toward the actual scroll
-  const target = scrollProgress
-  smoothedProgress += (target - smoothedProgress) * 0.08
+  // Ease toward the route-resolved target progress
+  const isHome = route.path === '/'
+  if (isHome) targetProgress = scrollProgress
+  smoothedProgress += (targetProgress - smoothedProgress) * 0.08
 
   const p = smoothedProgress
   const dt = clock.getDelta()
@@ -357,6 +374,8 @@ function tick() {
   }
 
   renderer.render(scene, camera)
+  // Expose progress to CSS for potential theme use
+  document.documentElement.style.setProperty('--morph-p', p.toFixed(3))
 }
 
 /**
@@ -373,6 +392,21 @@ function onResize() {
 
 function onScroll() {
   scrollProgress = computeScrollProgress()
+}
+
+/** Resolve the target progress for the current route. */
+function updateTargetProgress() {
+  const path = route.path
+  const fixed = ROUTE_PROGRESS[path]
+  if (fixed === undefined) {
+    // Unknown route — default to dark glass look
+    targetProgress = 0.05
+  } else if (fixed === -1) {
+    // Home: scroll-driven, target is live scroll progress
+    targetProgress = scrollProgress
+  } else {
+    targetProgress = fixed
+  }
 }
 
 function detectWebGL(): boolean {
@@ -417,7 +451,15 @@ onMounted(() => {
   document.addEventListener('visibilitychange', visibilityHandler)
 
   onScroll()
+  updateTargetProgress()
   tick()
+
+  // React to route changes
+  watch(() => route.path, () => {
+    updateTargetProgress()
+    // Scroll to top transition: reset smoothedProgress toward new target
+    window.scrollTo(0, 0)
+  })
 })
 
 onBeforeUnmount(() => {
@@ -463,12 +505,16 @@ onBeforeUnmount(() => {
   z-index: 0;
   pointer-events: none;
   overflow: hidden;
+  max-width: 100vw;
+  max-height: 100dvh;
 }
 
 .morph-bg__canvas {
   display: block;
   width: 100%;
   height: 100%;
+  max-width: 100vw;
+  max-height: 100dvh;
 }
 
 /* Static fallback gradient for WebGL-disabled clients */

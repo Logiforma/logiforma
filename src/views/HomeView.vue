@@ -273,9 +273,9 @@ onMounted(() => {
   padding: 80px 0;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(10, 10, 12, 0.55);
-  backdrop-filter: blur(20px) saturate(140%);
-  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  background: rgba(8, 8, 10, 0.80);
+  backdrop-filter: blur(24px) saturate(150%);
+  -webkit-backdrop-filter: blur(24px) saturate(150%);
 }
 
 .stats-grid {
@@ -315,9 +315,9 @@ onMounted(() => {
 }
 
 .pillar-card {
-  background: rgba(20, 20, 22, 0.55);
-  backdrop-filter: blur(18px) saturate(140%);
-  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  background: rgba(10, 10, 12, 0.80);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: var(--radius);
   padding: 40px 32px;
@@ -325,7 +325,7 @@ onMounted(() => {
 }
 
 .pillar-card:hover {
-  background: rgba(28, 28, 32, 0.7);
+  background: rgba(18, 18, 22, 0.88);
   border-color: rgba(255, 255, 255, 0.18);
   transform: translateY(-4px);
 }
@@ -363,9 +363,9 @@ onMounted(() => {
 }
 
 .service-card {
-  background: rgba(20, 20, 22, 0.55);
-  backdrop-filter: blur(18px) saturate(140%);
-  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  background: rgba(10, 10, 12, 0.80);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: var(--radius);
   padding: 32px;
@@ -373,7 +373,7 @@ onMounted(() => {
 }
 
 .service-card:hover {
-  background: rgba(28, 28, 32, 0.7);
+  background: rgba(18, 18, 22, 0.88);
   border-color: rgba(255, 255, 255, 0.18);
 }
 
@@ -409,9 +409,9 @@ onMounted(() => {
 .cta-card {
   text-align: center;
   padding: 80px 40px;
-  background: rgba(20, 20, 22, 0.55);
-  backdrop-filter: blur(18px) saturate(140%);
-  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  background: rgba(10, 10, 12, 0.80);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 20px;
   position: relative;

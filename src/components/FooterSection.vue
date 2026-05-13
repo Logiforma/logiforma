@@ -92,9 +92,9 @@ const links = {
 .footer {
   border-top: 1px solid rgba(255, 255, 255, 0.08);
   padding: 80px 0 40px;
-  background: rgba(8, 8, 10, 0.7);
-  backdrop-filter: blur(20px) saturate(140%);
-  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  background: rgba(6, 6, 8, 0.88);
+  backdrop-filter: blur(24px) saturate(150%);
+  -webkit-backdrop-filter: blur(24px) saturate(150%);
   position: relative;
   z-index: 1;
 }
