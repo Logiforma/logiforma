@@ -1,0 +1,350 @@
+{
+  "nodes": [
+    { "id": "logiforma_brand", "label": "Logiforma", "file_type": "document" },
+    { "id": "robots_txt", "label": "robots.txt", "file_type": "document" },
+    {
+      "id": "sitemap_ref",
+      "label": "Sitemap (logiforma.com/sitemap.xml)",
+      "file_type": "document"
+    },
+    { "id": "final_svg", "label": "final.svg (Logo)", "file_type": "image" },
+    {
+      "id": "initial_svg",
+      "label": "initial.svg (Logo Variant)",
+      "file_type": "image"
+    },
+    {
+      "id": "favicon_collection",
+      "label": "Favicon Collection",
+      "file_type": "image"
+    },
+    { "id": "favicon_16", "label": "favicon-16x16.png", "file_type": "image" },
+    { "id": "favicon_32", "label": "favicon-32x32.png", "file_type": "image" },
+    {
+      "id": "android_192",
+      "label": "android-chrome-192x192.png",
+      "file_type": "image"
+    },
+    {
+      "id": "android_512",
+      "label": "android-chrome-512x512.png",
+      "file_type": "image"
+    },
+    {
+      "id": "apple_touch",
+      "label": "apple-touch-icon.png",
+      "file_type": "image"
+    },
+    {
+      "id": "logo_transparent",
+      "label": "Logo Transparent Collection",
+      "file_type": "image"
+    },
+    {
+      "id": "logo_transparent_light",
+      "label": "Logo - Text - Light.png",
+      "file_type": "image"
+    },
+    {
+      "id": "logo_transparent_dark",
+      "label": "Logo - Dark.png",
+      "file_type": "image"
+    },
+    {
+      "id": "icon_transparent_light",
+      "label": "Icon - Light.png (Transparent)",
+      "file_type": "image"
+    },
+    {
+      "id": "icon_transparent_dark",
+      "label": "Icon - Dark.png (Transparent)",
+      "file_type": "image"
+    },
+    {
+      "id": "logo_opaque",
+      "label": "Logo Opaque Collection",
+      "file_type": "image"
+    },
+    {
+      "id": "logo_opaque_light",
+      "label": "Logo - Text - Light.png (Opaque)",
+      "file_type": "image"
+    },
+    {
+      "id": "logo_opaque_dark",
+      "label": "Logo - Dark.png (Opaque)",
+      "file_type": "image"
+    },
+    {
+      "id": "icon_opaque_light",
+      "label": "Icon - Light.png (Opaque)",
+      "file_type": "image"
+    },
+    {
+      "id": "icon_opaque_dark",
+      "label": "Icon - Dark.png (Opaque)",
+      "file_type": "image"
+    },
+    {
+      "id": "screen_1",
+      "label": "Screen 1 Design (Hero Page)",
+      "file_type": "image"
+    },
+    {
+      "id": "screen_2",
+      "label": "Screen 2 Design (Platform Page)",
+      "file_type": "image"
+    },
+    { "id": "screen_3", "label": "Screen 3 Design", "file_type": "image" },
+    {
+      "id": "tagline_noise_vision",
+      "label": "Transforming Noise to Vision",
+      "file_type": "document"
+    },
+    {
+      "id": "tagline_ambition_velocity",
+      "label": "Where your ambition meets velocity",
+      "file_type": "document"
+    },
+    {
+      "id": "nav_items",
+      "label": "Navigation Items (Platform, Solutions, About, Contact)",
+      "file_type": "document"
+    },
+    {
+      "id": "approach_global",
+      "label": "Global (Approach)",
+      "file_type": "document"
+    },
+    {
+      "id": "approach_research",
+      "label": "Research-based (Approach)",
+      "file_type": "document"
+    },
+    {
+      "id": "approach_effortless",
+      "label": "Effortless (Approach)",
+      "file_type": "document"
+    },
+    {
+      "id": "website_domain",
+      "label": "logiforma.com",
+      "file_type": "document"
+    }
+  ],
+  "edges": [
+    {
+      "source": "robots_txt",
+      "target": "sitemap_ref",
+      "relation": "references",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "robots_txt",
+      "target": "website_domain",
+      "relation": "governs",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "final_svg",
+      "target": "logiforma_brand",
+      "relation": "represents",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "initial_svg",
+      "target": "logiforma_brand",
+      "relation": "represents",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "favicon_collection",
+      "target": "logiforma_brand",
+      "relation": "belongs_to",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "favicon_16",
+      "target": "favicon_collection",
+      "relation": "part_of",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "favicon_32",
+      "target": "favicon_collection",
+      "relation": "part_of",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "android_192",
+      "target": "favicon_collection",
+      "relation": "part_of",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "android_512",
+      "target": "favicon_collection",
+      "relation": "part_of",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "apple_touch",
+      "target": "favicon_collection",
+      "relation": "part_of",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "logo_transparent",
+      "target": "logiforma_brand",
+      "relation": "represents",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "logo_transparent_light",
+      "target": "logo_transparent",
+      "relation": "part_of",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "logo_transparent_dark",
+      "target": "logo_transparent",
+      "relation": "part_of",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "icon_transparent_light",
+      "target": "logo_transparent",
+      "relation": "part_of",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "icon_transparent_dark",
+      "target": "logo_transparent",
+      "relation": "part_of",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "logo_opaque",
+      "target": "logiforma_brand",
+      "relation": "represents",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "logo_opaque_light",
+      "target": "logo_opaque",
+      "relation": "part_of",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "logo_opaque_dark",
+      "target": "logo_opaque",
+      "relation": "part_of",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "icon_opaque_light",
+      "target": "logo_opaque",
+      "relation": "part_of",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "icon_opaque_dark",
+      "target": "logo_opaque",
+      "relation": "part_of",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "screen_1",
+      "target": "tagline_noise_vision",
+      "relation": "displays",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "screen_2",
+      "target": "tagline_ambition_velocity",
+      "relation": "displays",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "screen_1",
+      "target": "nav_items",
+      "relation": "contains",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "screen_2",
+      "target": "nav_items",
+      "relation": "contains",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "screen_2",
+      "target": "approach_global",
+      "relation": "showcases",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "screen_2",
+      "target": "approach_research",
+      "relation": "showcases",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "screen_2",
+      "target": "approach_effortless",
+      "relation": "showcases",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "tagline_noise_vision",
+      "target": "logiforma_brand",
+      "relation": "describes_value_proposition_of",
+      "confidence": "INFERRED"
+    },
+    {
+      "source": "tagline_ambition_velocity",
+      "target": "logiforma_brand",
+      "relation": "describes_value_proposition_of",
+      "confidence": "INFERRED"
+    },
+    {
+      "source": "screen_1",
+      "target": "website_domain",
+      "relation": "prototype_for",
+      "confidence": "INFERRED"
+    },
+    {
+      "source": "screen_2",
+      "target": "website_domain",
+      "relation": "prototype_for",
+      "confidence": "INFERRED"
+    },
+    {
+      "source": "screen_3",
+      "target": "website_domain",
+      "relation": "prototype_for",
+      "confidence": "INFERRED"
+    }
+  ],
+  "hyperedges": [
+    {
+      "id": "branding_system",
+      "label": "Complete Branding System",
+      "members": [
+        "logiforma_brand",
+        "final_svg",
+        "initial_svg",
+        "logo_transparent",
+        "logo_opaque",
+        "favicon_collection"
+      ],
+      "relation": "comprises"
+    },
+    {
+      "id": "website_designs",
+      "label": "Website Design Screens",
+      "members": ["screen_1", "screen_2", "screen_3"],
+      "relation": "represents_website_layouts"
+    }
+  ]
+}

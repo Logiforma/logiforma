@@ -1,0 +1,264 @@
+{
+  "communities": {
+    "0": [
+      "components_morphingbackground_bg_a",
+      "components_morphingbackground_bg_b",
+      "components_morphingbackground_bg_c",
+      "components_morphingbackground_buildenvironment",
+      "components_morphingbackground_buildstarfield",
+      "components_morphingbackground_computescrollprogress",
+      "components_morphingbackground_detectwebgl",
+      "components_morphingbackground_initscene",
+      "components_morphingbackground_lerp",
+      "components_morphingbackground_lerp3",
+      "components_morphingbackground_lerp3color",
+      "components_morphingbackground_mat_a_color",
+      "components_morphingbackground_mat_b_color",
+      "components_morphingbackground_mat_c_color",
+      "components_morphingbackground_onresize",
+      "components_morphingbackground_onscroll",
+      "components_morphingbackground_smoothstep",
+      "components_morphingbackground_tick",
+      "components_morphingbackground_updatetargetprogress",
+      "src_components_morphingbackground_vue"
+    ],
+    "1": [
+      "final_svg",
+      "icon_opaque_dark",
+      "icon_opaque_light",
+      "icon_transparent_dark",
+      "icon_transparent_light",
+      "initial_svg",
+      "logiforma_brand",
+      "logo_opaque",
+      "logo_opaque_dark",
+      "logo_opaque_light",
+      "logo_transparent",
+      "logo_transparent_dark",
+      "logo_transparent_light",
+      "tagline_ambition_velocity"
+    ],
+    "2": [
+      "about_view",
+      "company_profile",
+      "contact_view",
+      "generate_sitemap",
+      "hero_animation_vue",
+      "home_view",
+      "icon_positions",
+      "logiforma_company",
+      "pricing_view",
+      "privacy_view",
+      "router_index",
+      "services_view",
+      "terms_view"
+    ],
+    "3": [
+      "approach_effortless",
+      "approach_global",
+      "approach_research",
+      "nav_items",
+      "robots_txt",
+      "screen_1",
+      "screen_2",
+      "screen_3",
+      "sitemap_ref",
+      "tagline_noise_vision",
+      "website_domain"
+    ],
+    "4": [
+      "app_vue",
+      "counter_store",
+      "footer_vue",
+      "index_html",
+      "main_ts",
+      "morphing_bg_vue",
+      "navbar_vue",
+      "pinia_framework",
+      "threejs",
+      "vue_router"
+    ],
+    "5": [
+      "router_index_canonical",
+      "router_index_router",
+      "router_index_setmeta",
+      "src_app_vue",
+      "src_main_app",
+      "src_main_ts",
+      "src_router_index_ts"
+    ],
+    "6": [
+      "android_192",
+      "android_512",
+      "apple_touch",
+      "favicon_16",
+      "favicon_32",
+      "favicon_collection"
+    ],
+    "7": [
+      "env_types",
+      "eslint_config",
+      "readme",
+      "vite_config",
+      "vue_framework"
+    ],
+    "8": [
+      "scripts_generate_sitemap_dirname",
+      "scripts_generate_sitemap_pages",
+      "scripts_generate_sitemap_ts"
+    ],
+    "9": [
+      "components_heroanimation_grad",
+      "src_components_heroanimation_vue"
+    ],
+    "10": [
+      "data_iconpositions_icon_positions",
+      "src_data_iconpositions_ts"
+    ],
+    "11": [
+      "src_views_homeview_vue",
+      "views_homeview_observer"
+    ],
+    "12": [
+      "src_stores_counter_ts",
+      "stores_counter_usecounterstore"
+    ],
+    "13": [
+      "src_views_aboutview_vue",
+      "views_aboutview_observer"
+    ],
+    "14": [
+      "src_views_pricingview_vue",
+      "views_pricingview_observer"
+    ],
+    "15": [
+      "env_d_ts"
+    ],
+    "16": [
+      "eslint_config_ts"
+    ],
+    "17": [
+      "vite_config_ts"
+    ],
+    "18": [
+      "src_components_navbar_vue"
+    ],
+    "19": [
+      "src_components_footersection_vue"
+    ],
+    "20": [
+      "src_views_termsview_vue"
+    ],
+    "21": [
+      "src_views_servicesview_vue"
+    ],
+    "22": [
+      "src_views_privacyview_vue"
+    ],
+    "23": [
+      "src_views_contactview_vue"
+    ],
+    "24": [
+      "claude_instructions"
+    ]
+  },
+  "cohesion": {},
+  "god_nodes": [
+    {
+      "id": "components_morphingbackground_tick",
+      "label": "tick()",
+      "degree": 5
+    },
+    {
+      "id": "components_morphingbackground_lerp",
+      "label": "lerp()",
+      "degree": 4
+    },
+    {
+      "id": "components_morphingbackground_smoothstep",
+      "label": "smoothstep()",
+      "degree": 4
+    },
+    {
+      "id": "components_morphingbackground_lerp3",
+      "label": "lerp3()",
+      "degree": 4
+    },
+    {
+      "id": "components_morphingbackground_lerp3color",
+      "label": "lerp3Color()",
+      "degree": 4
+    },
+    {
+      "id": "components_morphingbackground_initscene",
+      "label": "initScene()",
+      "degree": 3
+    },
+    {
+      "id": "components_morphingbackground_computescrollprogress",
+      "label": "computeScrollProgress()",
+      "degree": 2
+    },
+    {
+      "id": "components_morphingbackground_buildstarfield",
+      "label": "buildStarfield()",
+      "degree": 2
+    },
+    {
+      "id": "components_morphingbackground_buildenvironment",
+      "label": "buildEnvironment()",
+      "degree": 2
+    },
+    {
+      "id": "components_morphingbackground_onscroll",
+      "label": "onScroll()",
+      "degree": 2
+    }
+  ],
+  "surprises": [
+    {
+      "source": "Transforming Noise to Vision",
+      "target": "Logiforma",
+      "source_files": [
+        "",
+        ""
+      ],
+      "confidence": "INFERRED",
+      "relation": "describes_value_proposition_of",
+      "note": "Bridges community 1 \u2192 community 3"
+    },
+    {
+      "source": "main.ts",
+      "target": "router/index.ts",
+      "source_files": [
+        "",
+        ""
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "installs router from",
+      "note": "Bridges community 2 \u2192 community 4"
+    },
+    {
+      "source": "main.ts",
+      "target": "Vue 3",
+      "source_files": [
+        "",
+        ""
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "creates Vue app using",
+      "note": "Bridges community 4 \u2192 community 7"
+    },
+    {
+      "source": "Favicon Collection",
+      "target": "Logiforma",
+      "source_files": [
+        "",
+        ""
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "belongs_to",
+      "note": "Bridges community 1 \u2192 community 6"
+    }
+  ]
+}

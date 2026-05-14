@@ -1,0 +1,441 @@
+{
+  "nodes": [
+    {
+      "id": "app_vue",
+      "label": "App.vue",
+      "file_type": "code"
+    },
+    {
+      "id": "navbar_vue",
+      "label": "NavBar.vue",
+      "file_type": "code"
+    },
+    {
+      "id": "footer_vue",
+      "label": "FooterSection.vue",
+      "file_type": "code"
+    },
+    {
+      "id": "morphing_bg_vue",
+      "label": "MorphingBackground.vue",
+      "file_type": "code"
+    },
+    {
+      "id": "hero_animation_vue",
+      "label": "HeroAnimation.vue",
+      "file_type": "code"
+    },
+    {
+      "id": "home_view",
+      "label": "HomeView.vue",
+      "file_type": "code"
+    },
+    {
+      "id": "about_view",
+      "label": "AboutView.vue",
+      "file_type": "code"
+    },
+    {
+      "id": "services_view",
+      "label": "ServicesView.vue",
+      "file_type": "code"
+    },
+    {
+      "id": "pricing_view",
+      "label": "PricingView.vue",
+      "file_type": "code"
+    },
+    {
+      "id": "contact_view",
+      "label": "ContactView.vue",
+      "file_type": "code"
+    },
+    {
+      "id": "privacy_view",
+      "label": "PrivacyView.vue",
+      "file_type": "code"
+    },
+    {
+      "id": "terms_view",
+      "label": "TermsView.vue",
+      "file_type": "code"
+    },
+    {
+      "id": "router_index",
+      "label": "router/index.ts",
+      "file_type": "code"
+    },
+    {
+      "id": "main_ts",
+      "label": "main.ts",
+      "file_type": "code"
+    },
+    {
+      "id": "counter_store",
+      "label": "counter.ts",
+      "file_type": "code"
+    },
+    {
+      "id": "icon_positions",
+      "label": "iconPositions.ts",
+      "file_type": "code"
+    },
+    {
+      "id": "vite_config",
+      "label": "vite.config.ts",
+      "file_type": "code"
+    },
+    {
+      "id": "eslint_config",
+      "label": "eslint.config.ts",
+      "file_type": "code"
+    },
+    {
+      "id": "env_types",
+      "label": "env.d.ts",
+      "file_type": "code"
+    },
+    {
+      "id": "generate_sitemap",
+      "label": "generate-sitemap.ts",
+      "file_type": "code"
+    },
+    {
+      "id": "index_html",
+      "label": "index.html",
+      "file_type": "code"
+    },
+    {
+      "id": "readme",
+      "label": "README.md",
+      "file_type": "document"
+    },
+    {
+      "id": "company_profile",
+      "label": "company.txt",
+      "file_type": "document"
+    },
+    {
+      "id": "claude_instructions",
+      "label": "CLAUDE.md",
+      "file_type": "document"
+    },
+    {
+      "id": "vue_framework",
+      "label": "Vue 3",
+      "file_type": "code"
+    },
+    {
+      "id": "pinia_framework",
+      "label": "Pinia",
+      "file_type": "code"
+    },
+    {
+      "id": "vue_router",
+      "label": "Vue Router",
+      "file_type": "code"
+    },
+    {
+      "id": "threejs",
+      "label": "Three.js",
+      "file_type": "code"
+    },
+    {
+      "id": "logiforma_company",
+      "label": "Logiforma",
+      "file_type": "document"
+    }
+  ],
+  "edges": [
+    {
+      "source": "app_vue",
+      "target": "navbar_vue",
+      "relation": "imports and renders",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "app_vue",
+      "target": "footer_vue",
+      "relation": "imports and renders",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "app_vue",
+      "target": "morphing_bg_vue",
+      "relation": "imports and renders as background",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "app_vue",
+      "target": "vue_router",
+      "relation": "uses RouterView component from",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "main_ts",
+      "target": "app_vue",
+      "relation": "imports and creates app from",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "main_ts",
+      "target": "router_index",
+      "relation": "installs router from",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "main_ts",
+      "target": "pinia_framework",
+      "relation": "creates and installs Pinia store",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "main_ts",
+      "target": "vue_framework",
+      "relation": "creates Vue app using",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "index_html",
+      "target": "main_ts",
+      "relation": "mounts Vue app from",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "router_index",
+      "target": "home_view",
+      "relation": "defines route for",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "router_index",
+      "target": "about_view",
+      "relation": "defines route for",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "router_index",
+      "target": "services_view",
+      "relation": "defines route for",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "router_index",
+      "target": "pricing_view",
+      "relation": "defines route for",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "router_index",
+      "target": "contact_view",
+      "relation": "defines route for",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "router_index",
+      "target": "privacy_view",
+      "relation": "defines route for",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "router_index",
+      "target": "terms_view",
+      "relation": "defines route for",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "router_index",
+      "target": "vue_router",
+      "relation": "uses createRouter and createWebHistory from",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "navbar_vue",
+      "target": "vue_router",
+      "relation": "uses RouterLink and useRoute from",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "footer_vue",
+      "target": "vue_router",
+      "relation": "uses RouterLink for navigation",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "morphing_bg_vue",
+      "target": "threejs",
+      "relation": "uses for 3D rendering",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "morphing_bg_vue",
+      "target": "vue_router",
+      "relation": "uses useRoute for scroll-driven morph progress",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "home_view",
+      "target": "hero_animation_vue",
+      "relation": "imports and renders",
+      "confidence": "INFERRED"
+    },
+    {
+      "source": "hero_animation_vue",
+      "target": "icon_positions",
+      "relation": "imports particle positions from",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "counter_store",
+      "target": "pinia_framework",
+      "relation": "defines store using defineStore from",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "vite_config",
+      "target": "vue_framework",
+      "relation": "configures Vue plugin for",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "eslint_config",
+      "target": "vue_framework",
+      "relation": "configures linting for Vue TypeScript",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "env_types",
+      "target": "vue_framework",
+      "relation": "provides Vite client type definitions for",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "generate_sitemap",
+      "target": "home_view",
+      "relation": "generates sitemap entry for root path",
+      "confidence": "INFERRED"
+    },
+    {
+      "source": "generate_sitemap",
+      "target": "about_view",
+      "relation": "generates sitemap entry for /about path",
+      "confidence": "INFERRED"
+    },
+    {
+      "source": "generate_sitemap",
+      "target": "services_view",
+      "relation": "generates sitemap entry for /services path",
+      "confidence": "INFERRED"
+    },
+    {
+      "source": "generate_sitemap",
+      "target": "pricing_view",
+      "relation": "generates sitemap entry for /pricing path",
+      "confidence": "INFERRED"
+    },
+    {
+      "source": "generate_sitemap",
+      "target": "contact_view",
+      "relation": "generates sitemap entry for /contact path",
+      "confidence": "INFERRED"
+    },
+    {
+      "source": "generate_sitemap",
+      "target": "privacy_view",
+      "relation": "generates sitemap entry for /privacy path",
+      "confidence": "INFERRED"
+    },
+    {
+      "source": "generate_sitemap",
+      "target": "terms_view",
+      "relation": "generates sitemap entry for /terms path",
+      "confidence": "INFERRED"
+    },
+    {
+      "source": "readme",
+      "target": "vue_framework",
+      "relation": "documents project setup using",
+      "confidence": "INFERRED"
+    },
+    {
+      "source": "company_profile",
+      "target": "logiforma_company",
+      "relation": "describes company profile for",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "home_view",
+      "target": "logiforma_company",
+      "relation": "presents company value proposition for",
+      "confidence": "INFERRED"
+    },
+    {
+      "source": "about_view",
+      "target": "logiforma_company",
+      "relation": "explains company story, vision and mission for",
+      "confidence": "INFERRED"
+    },
+    {
+      "source": "services_view",
+      "target": "logiforma_company",
+      "relation": "showcases platform and services offered by",
+      "confidence": "INFERRED"
+    },
+    {
+      "source": "pricing_view",
+      "target": "logiforma_company",
+      "relation": "presents pricing and service tiers for",
+      "confidence": "INFERRED"
+    },
+    {
+      "source": "contact_view",
+      "target": "logiforma_company",
+      "relation": "enables contact engagement for",
+      "confidence": "INFERRED"
+    },
+    {
+      "source": "privacy_view",
+      "target": "logiforma_company",
+      "relation": "documents privacy and compliance practices for",
+      "confidence": "INFERRED"
+    },
+    {
+      "source": "terms_view",
+      "target": "logiforma_company",
+      "relation": "documents terms of service for",
+      "confidence": "INFERRED"
+    }
+  ],
+  "hyperedges": [
+    {
+      "id": "layout_system",
+      "name": "Layout System",
+      "members": ["app_vue", "navbar_vue", "footer_vue", "morphing_bg_vue"],
+      "description": "Persistent layout components that render on all pages"
+    },
+    {
+      "id": "view_routes",
+      "name": "View Routes",
+      "members": ["router_index", "home_view", "about_view", "services_view", "pricing_view", "contact_view", "privacy_view", "terms_view"],
+      "description": "Page-level routes managed by Vue Router"
+    },
+    {
+      "id": "build_config",
+      "name": "Build Configuration",
+      "members": ["vite_config", "eslint_config", "env_types"],
+      "description": "Development tooling and build configuration"
+    },
+    {
+      "id": "animation_system",
+      "name": "Animation System",
+      "members": ["morphing_bg_vue", "hero_animation_vue", "icon_positions"],
+      "description": "Canvas and WebGL-based animations with particle systems"
+    },
+    {
+      "id": "company_content",
+      "name": "Company Content Hub",
+      "members": ["home_view", "about_view", "services_view", "pricing_view", "contact_view", "privacy_view", "terms_view", "company_profile"],
+      "description": "All content pages and company information describing Logiforma"
+    }
+  ]
+}

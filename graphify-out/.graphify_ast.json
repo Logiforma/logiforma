@@ -1,0 +1,954 @@
+{
+  "nodes": [
+    {
+      "id": "env_d_ts",
+      "label": "env.d.ts",
+      "file_type": "code",
+      "source_file": "env.d.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "eslint_config_ts",
+      "label": "eslint.config.ts",
+      "file_type": "code",
+      "source_file": "eslint.config.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "vite_config_ts",
+      "label": "vite.config.ts",
+      "file_type": "code",
+      "source_file": "vite.config.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "scripts_generate_sitemap_ts",
+      "label": "generate-sitemap.ts",
+      "file_type": "code",
+      "source_file": "scripts/generate-sitemap.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "scripts_generate_sitemap_dirname",
+      "label": "__dirname",
+      "file_type": "code",
+      "source_file": "scripts/generate-sitemap.ts",
+      "source_location": "L5"
+    },
+    {
+      "id": "scripts_generate_sitemap_pages",
+      "label": "pages",
+      "file_type": "code",
+      "source_file": "scripts/generate-sitemap.ts",
+      "source_location": "L9"
+    },
+    {
+      "id": "src_app_vue",
+      "label": "App.vue",
+      "file_type": "code",
+      "source_file": "src/App.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_main_ts",
+      "label": "main.ts",
+      "file_type": "code",
+      "source_file": "src/main.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_main_app",
+      "label": "app",
+      "file_type": "code",
+      "source_file": "src/main.ts",
+      "source_location": "L8"
+    },
+    {
+      "id": "src_stores_counter_ts",
+      "label": "counter.ts",
+      "file_type": "code",
+      "source_file": "src/stores/counter.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "stores_counter_usecounterstore",
+      "label": "useCounterStore",
+      "file_type": "code",
+      "source_file": "src/stores/counter.ts",
+      "source_location": "L4"
+    },
+    {
+      "id": "src_components_navbar_vue",
+      "label": "NavBar.vue",
+      "file_type": "code",
+      "source_file": "src/components/NavBar.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_components_footersection_vue",
+      "label": "FooterSection.vue",
+      "file_type": "code",
+      "source_file": "src/components/FooterSection.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_components_morphingbackground_vue",
+      "label": "MorphingBackground.vue",
+      "file_type": "code",
+      "source_file": "src/components/MorphingBackground.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "components_morphingbackground_bg_a",
+      "label": "BG_A",
+      "file_type": "code",
+      "source_file": "src/components/MorphingBackground.vue",
+      "source_location": "L71"
+    },
+    {
+      "id": "components_morphingbackground_bg_b",
+      "label": "BG_B",
+      "file_type": "code",
+      "source_file": "src/components/MorphingBackground.vue",
+      "source_location": "L72"
+    },
+    {
+      "id": "components_morphingbackground_bg_c",
+      "label": "BG_C",
+      "file_type": "code",
+      "source_file": "src/components/MorphingBackground.vue",
+      "source_location": "L73"
+    },
+    {
+      "id": "components_morphingbackground_mat_a_color",
+      "label": "MAT_A_COLOR",
+      "file_type": "code",
+      "source_file": "src/components/MorphingBackground.vue",
+      "source_location": "L75"
+    },
+    {
+      "id": "components_morphingbackground_mat_b_color",
+      "label": "MAT_B_COLOR",
+      "file_type": "code",
+      "source_file": "src/components/MorphingBackground.vue",
+      "source_location": "L76"
+    },
+    {
+      "id": "components_morphingbackground_mat_c_color",
+      "label": "MAT_C_COLOR",
+      "file_type": "code",
+      "source_file": "src/components/MorphingBackground.vue",
+      "source_location": "L77"
+    },
+    {
+      "id": "components_morphingbackground_computescrollprogress",
+      "label": "computeScrollProgress()",
+      "file_type": "code",
+      "source_file": "src/components/MorphingBackground.vue",
+      "source_location": "L82"
+    },
+    {
+      "id": "components_morphingbackground_lerp",
+      "label": "lerp()",
+      "file_type": "code",
+      "source_file": "src/components/MorphingBackground.vue",
+      "source_location": "L92"
+    },
+    {
+      "id": "components_morphingbackground_smoothstep",
+      "label": "smoothstep()",
+      "file_type": "code",
+      "source_file": "src/components/MorphingBackground.vue",
+      "source_location": "L99"
+    },
+    {
+      "id": "components_morphingbackground_lerp3",
+      "label": "lerp3()",
+      "file_type": "code",
+      "source_file": "src/components/MorphingBackground.vue",
+      "source_location": "L109"
+    },
+    {
+      "id": "components_morphingbackground_lerp3color",
+      "label": "lerp3Color()",
+      "file_type": "code",
+      "source_file": "src/components/MorphingBackground.vue",
+      "source_location": "L114"
+    },
+    {
+      "id": "components_morphingbackground_buildstarfield",
+      "label": "buildStarfield()",
+      "file_type": "code",
+      "source_file": "src/components/MorphingBackground.vue",
+      "source_location": "L125"
+    },
+    {
+      "id": "components_morphingbackground_initscene",
+      "label": "initScene()",
+      "file_type": "code",
+      "source_file": "src/components/MorphingBackground.vue",
+      "source_location": "L153"
+    },
+    {
+      "id": "components_morphingbackground_buildenvironment",
+      "label": "buildEnvironment()",
+      "file_type": "code",
+      "source_file": "src/components/MorphingBackground.vue",
+      "source_location": "L287"
+    },
+    {
+      "id": "components_morphingbackground_tick",
+      "label": "tick()",
+      "file_type": "code",
+      "source_file": "src/components/MorphingBackground.vue",
+      "source_location": "L329"
+    },
+    {
+      "id": "components_morphingbackground_onresize",
+      "label": "onResize()",
+      "file_type": "code",
+      "source_file": "src/components/MorphingBackground.vue",
+      "source_location": "L439"
+    },
+    {
+      "id": "components_morphingbackground_onscroll",
+      "label": "onScroll()",
+      "file_type": "code",
+      "source_file": "src/components/MorphingBackground.vue",
+      "source_location": "L448"
+    },
+    {
+      "id": "components_morphingbackground_updatetargetprogress",
+      "label": "updateTargetProgress()",
+      "file_type": "code",
+      "source_file": "src/components/MorphingBackground.vue",
+      "source_location": "L453"
+    },
+    {
+      "id": "components_morphingbackground_detectwebgl",
+      "label": "detectWebGL()",
+      "file_type": "code",
+      "source_file": "src/components/MorphingBackground.vue",
+      "source_location": "L467"
+    },
+    {
+      "id": "src_components_heroanimation_vue",
+      "label": "HeroAnimation.vue",
+      "file_type": "code",
+      "source_file": "src/components/HeroAnimation.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "components_heroanimation_grad",
+      "label": "grad",
+      "file_type": "code",
+      "source_file": "src/components/HeroAnimation.vue",
+      "source_location": "L104"
+    },
+    {
+      "id": "src_data_iconpositions_ts",
+      "label": "iconPositions.ts",
+      "file_type": "code",
+      "source_file": "src/data/iconPositions.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "data_iconpositions_icon_positions",
+      "label": "ICON_POSITIONS",
+      "file_type": "code",
+      "source_file": "src/data/iconPositions.ts",
+      "source_location": "L3"
+    },
+    {
+      "id": "src_views_termsview_vue",
+      "label": "TermsView.vue",
+      "file_type": "code",
+      "source_file": "src/views/TermsView.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_views_servicesview_vue",
+      "label": "ServicesView.vue",
+      "file_type": "code",
+      "source_file": "src/views/ServicesView.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_views_aboutview_vue",
+      "label": "AboutView.vue",
+      "file_type": "code",
+      "source_file": "src/views/AboutView.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "views_aboutview_observer",
+      "label": "observer",
+      "file_type": "code",
+      "source_file": "src/views/AboutView.vue",
+      "source_location": "L41"
+    },
+    {
+      "id": "src_views_pricingview_vue",
+      "label": "PricingView.vue",
+      "file_type": "code",
+      "source_file": "src/views/PricingView.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "views_pricingview_observer",
+      "label": "observer",
+      "file_type": "code",
+      "source_file": "src/views/PricingView.vue",
+      "source_location": "L88"
+    },
+    {
+      "id": "src_views_homeview_vue",
+      "label": "HomeView.vue",
+      "file_type": "code",
+      "source_file": "src/views/HomeView.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "views_homeview_observer",
+      "label": "observer",
+      "file_type": "code",
+      "source_file": "src/views/HomeView.vue",
+      "source_location": "L59"
+    },
+    {
+      "id": "src_views_privacyview_vue",
+      "label": "PrivacyView.vue",
+      "file_type": "code",
+      "source_file": "src/views/PrivacyView.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_views_contactview_vue",
+      "label": "ContactView.vue",
+      "file_type": "code",
+      "source_file": "src/views/ContactView.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_router_index_ts",
+      "label": "index.ts",
+      "file_type": "code",
+      "source_file": "src/router/index.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "router_index_router",
+      "label": "router",
+      "file_type": "code",
+      "source_file": "src/router/index.ts",
+      "source_location": "L5"
+    },
+    {
+      "id": "router_index_setmeta",
+      "label": "setMeta()",
+      "file_type": "code",
+      "source_file": "src/router/index.ts",
+      "source_location": "L95"
+    },
+    {
+      "id": "router_index_canonical",
+      "label": "canonical",
+      "file_type": "code",
+      "source_file": "src/router/index.ts",
+      "source_location": "L112"
+    }
+  ],
+  "edges": [
+    {
+      "source": "eslint_config_ts",
+      "target": "config",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "eslint.config.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "eslint_config_ts",
+      "target": "eslint_config_typescript",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "eslint.config.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "eslint_config_ts",
+      "target": "eslint_plugin_vue",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "eslint.config.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "eslint_config_ts",
+      "target": "eslint_plugin_oxlint",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "eslint.config.ts",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "eslint_config_ts",
+      "target": "flat",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "eslint.config.ts",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "vite_config_ts",
+      "target": "node_url",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "vite.config.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "vite_config_ts",
+      "target": "vite",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "vite.config.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "vite_config_ts",
+      "target": "plugin_vue",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "vite.config.ts",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "vite_config_ts",
+      "target": "vite_plugin_vue_devtools",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "vite.config.ts",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "scripts_generate_sitemap_ts",
+      "target": "node_fs",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/generate-sitemap.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "scripts_generate_sitemap_ts",
+      "target": "node_path",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/generate-sitemap.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "scripts_generate_sitemap_ts",
+      "target": "node_url",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/generate-sitemap.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "scripts_generate_sitemap_ts",
+      "target": "scripts_generate_sitemap_dirname",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/generate-sitemap.ts",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "scripts_generate_sitemap_ts",
+      "target": "scripts_generate_sitemap_pages",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/generate-sitemap.ts",
+      "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "src_main_ts",
+      "target": "vue",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/main.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "src_main_ts",
+      "target": "pinia",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/main.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "src_main_ts",
+      "target": "src_app_vue",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/main.ts",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "src_main_ts",
+      "target": "src_router_index_ts",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/main.ts",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "src_main_ts",
+      "target": "users_bacon_documents_logiforma_logiforma_src_assets_main_css",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/main.ts",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "src_main_ts",
+      "target": "src_main_app",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/main.ts",
+      "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "src_stores_counter_ts",
+      "target": "vue",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/stores/counter.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "src_stores_counter_ts",
+      "target": "pinia",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/stores/counter.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "src_stores_counter_ts",
+      "target": "stores_counter_usecounterstore",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/stores/counter.ts",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "src_components_morphingbackground_vue",
+      "target": "components_morphingbackground_bg_a",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/MorphingBackground.vue",
+      "source_location": "L71",
+      "weight": 1.0
+    },
+    {
+      "source": "src_components_morphingbackground_vue",
+      "target": "components_morphingbackground_bg_b",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/MorphingBackground.vue",
+      "source_location": "L72",
+      "weight": 1.0
+    },
+    {
+      "source": "src_components_morphingbackground_vue",
+      "target": "components_morphingbackground_bg_c",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/MorphingBackground.vue",
+      "source_location": "L73",
+      "weight": 1.0
+    },
+    {
+      "source": "src_components_morphingbackground_vue",
+      "target": "components_morphingbackground_mat_a_color",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/MorphingBackground.vue",
+      "source_location": "L75",
+      "weight": 1.0
+    },
+    {
+      "source": "src_components_morphingbackground_vue",
+      "target": "components_morphingbackground_mat_b_color",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/MorphingBackground.vue",
+      "source_location": "L76",
+      "weight": 1.0
+    },
+    {
+      "source": "src_components_morphingbackground_vue",
+      "target": "components_morphingbackground_mat_c_color",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/MorphingBackground.vue",
+      "source_location": "L77",
+      "weight": 1.0
+    },
+    {
+      "source": "src_components_morphingbackground_vue",
+      "target": "components_morphingbackground_computescrollprogress",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/MorphingBackground.vue",
+      "source_location": "L82",
+      "weight": 1.0
+    },
+    {
+      "source": "src_components_morphingbackground_vue",
+      "target": "components_morphingbackground_lerp",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/MorphingBackground.vue",
+      "source_location": "L92",
+      "weight": 1.0
+    },
+    {
+      "source": "src_components_morphingbackground_vue",
+      "target": "components_morphingbackground_smoothstep",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/MorphingBackground.vue",
+      "source_location": "L99",
+      "weight": 1.0
+    },
+    {
+      "source": "src_components_morphingbackground_vue",
+      "target": "components_morphingbackground_lerp3",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/MorphingBackground.vue",
+      "source_location": "L109",
+      "weight": 1.0
+    },
+    {
+      "source": "src_components_morphingbackground_vue",
+      "target": "components_morphingbackground_lerp3color",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/MorphingBackground.vue",
+      "source_location": "L114",
+      "weight": 1.0
+    },
+    {
+      "source": "src_components_morphingbackground_vue",
+      "target": "components_morphingbackground_buildstarfield",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/MorphingBackground.vue",
+      "source_location": "L125",
+      "weight": 1.0
+    },
+    {
+      "source": "src_components_morphingbackground_vue",
+      "target": "components_morphingbackground_initscene",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/MorphingBackground.vue",
+      "source_location": "L153",
+      "weight": 1.0
+    },
+    {
+      "source": "src_components_morphingbackground_vue",
+      "target": "components_morphingbackground_buildenvironment",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/MorphingBackground.vue",
+      "source_location": "L287",
+      "weight": 1.0
+    },
+    {
+      "source": "src_components_morphingbackground_vue",
+      "target": "components_morphingbackground_tick",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/MorphingBackground.vue",
+      "source_location": "L329",
+      "weight": 1.0
+    },
+    {
+      "source": "src_components_morphingbackground_vue",
+      "target": "components_morphingbackground_onresize",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/MorphingBackground.vue",
+      "source_location": "L439",
+      "weight": 1.0
+    },
+    {
+      "source": "src_components_morphingbackground_vue",
+      "target": "components_morphingbackground_onscroll",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/MorphingBackground.vue",
+      "source_location": "L448",
+      "weight": 1.0
+    },
+    {
+      "source": "src_components_morphingbackground_vue",
+      "target": "components_morphingbackground_updatetargetprogress",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/MorphingBackground.vue",
+      "source_location": "L453",
+      "weight": 1.0
+    },
+    {
+      "source": "src_components_morphingbackground_vue",
+      "target": "components_morphingbackground_detectwebgl",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/MorphingBackground.vue",
+      "source_location": "L467",
+      "weight": 1.0
+    },
+    {
+      "source": "components_morphingbackground_lerp3",
+      "target": "components_morphingbackground_lerp",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/MorphingBackground.vue",
+      "source_location": "L110",
+      "weight": 1.0
+    },
+    {
+      "source": "components_morphingbackground_lerp3",
+      "target": "components_morphingbackground_smoothstep",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/MorphingBackground.vue",
+      "source_location": "L110",
+      "weight": 1.0
+    },
+    {
+      "source": "components_morphingbackground_lerp3color",
+      "target": "components_morphingbackground_lerp",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/MorphingBackground.vue",
+      "source_location": "L116",
+      "weight": 1.0
+    },
+    {
+      "source": "components_morphingbackground_lerp3color",
+      "target": "components_morphingbackground_smoothstep",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/MorphingBackground.vue",
+      "source_location": "L116",
+      "weight": 1.0
+    },
+    {
+      "source": "components_morphingbackground_initscene",
+      "target": "components_morphingbackground_buildstarfield",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/MorphingBackground.vue",
+      "source_location": "L274",
+      "weight": 1.0
+    },
+    {
+      "source": "components_morphingbackground_initscene",
+      "target": "components_morphingbackground_buildenvironment",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/MorphingBackground.vue",
+      "source_location": "L280",
+      "weight": 1.0
+    },
+    {
+      "source": "components_morphingbackground_tick",
+      "target": "components_morphingbackground_lerp3color",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/MorphingBackground.vue",
+      "source_location": "L348",
+      "weight": 1.0
+    },
+    {
+      "source": "components_morphingbackground_tick",
+      "target": "components_morphingbackground_lerp3",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/MorphingBackground.vue",
+      "source_location": "L352",
+      "weight": 1.0
+    },
+    {
+      "source": "components_morphingbackground_tick",
+      "target": "components_morphingbackground_smoothstep",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/MorphingBackground.vue",
+      "source_location": "L364",
+      "weight": 1.0
+    },
+    {
+      "source": "components_morphingbackground_tick",
+      "target": "components_morphingbackground_lerp",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/MorphingBackground.vue",
+      "source_location": "L376",
+      "weight": 1.0
+    },
+    {
+      "source": "components_morphingbackground_onscroll",
+      "target": "components_morphingbackground_computescrollprogress",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/MorphingBackground.vue",
+      "source_location": "L449",
+      "weight": 1.0
+    },
+    {
+      "source": "src_components_heroanimation_vue",
+      "target": "components_heroanimation_grad",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/HeroAnimation.vue",
+      "source_location": "L104",
+      "weight": 1.0
+    },
+    {
+      "source": "src_data_iconpositions_ts",
+      "target": "data_iconpositions_icon_positions",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/data/iconPositions.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "src_views_aboutview_vue",
+      "target": "views_aboutview_observer",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/views/AboutView.vue",
+      "source_location": "L41",
+      "weight": 1.0
+    },
+    {
+      "source": "src_views_pricingview_vue",
+      "target": "views_pricingview_observer",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/views/PricingView.vue",
+      "source_location": "L88",
+      "weight": 1.0
+    },
+    {
+      "source": "src_views_homeview_vue",
+      "target": "views_homeview_observer",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/views/HomeView.vue",
+      "source_location": "L59",
+      "weight": 1.0
+    },
+    {
+      "source": "src_router_index_ts",
+      "target": "vue_router",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/router/index.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "src_router_index_ts",
+      "target": "router_index_router",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/router/index.ts",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "src_router_index_ts",
+      "target": "router_index_setmeta",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/router/index.ts",
+      "source_location": "L95",
+      "weight": 1.0
+    },
+    {
+      "source": "src_router_index_ts",
+      "target": "router_index_canonical",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/router/index.ts",
+      "source_location": "L112",
+      "weight": 1.0
+    }
+  ],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

@@ -42,3 +42,5 @@ __screenshots__/
 .terraform/
 tfplan
 .tofu/
+
+/graphify-out/cache

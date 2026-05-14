@@ -1,0 +1,47 @@
+/Users/bacon/Documents/Logiforma/Logiforma/env.d.ts
+/Users/bacon/Documents/Logiforma/Logiforma/eslint.config.ts
+/Users/bacon/Documents/Logiforma/Logiforma/vite.config.ts
+/Users/bacon/Documents/Logiforma/Logiforma/scripts/generate-sitemap.ts
+/Users/bacon/Documents/Logiforma/Logiforma/src/App.vue
+/Users/bacon/Documents/Logiforma/Logiforma/src/main.ts
+/Users/bacon/Documents/Logiforma/Logiforma/src/stores/counter.ts
+/Users/bacon/Documents/Logiforma/Logiforma/src/components/NavBar.vue
+/Users/bacon/Documents/Logiforma/Logiforma/src/components/FooterSection.vue
+/Users/bacon/Documents/Logiforma/Logiforma/src/components/MorphingBackground.vue
+/Users/bacon/Documents/Logiforma/Logiforma/src/components/HeroAnimation.vue
+/Users/bacon/Documents/Logiforma/Logiforma/src/data/iconPositions.ts
+/Users/bacon/Documents/Logiforma/Logiforma/src/views/TermsView.vue
+/Users/bacon/Documents/Logiforma/Logiforma/src/views/ServicesView.vue
+/Users/bacon/Documents/Logiforma/Logiforma/src/views/AboutView.vue
+/Users/bacon/Documents/Logiforma/Logiforma/src/views/PricingView.vue
+/Users/bacon/Documents/Logiforma/Logiforma/src/views/HomeView.vue
+/Users/bacon/Documents/Logiforma/Logiforma/src/views/PrivacyView.vue
+/Users/bacon/Documents/Logiforma/Logiforma/src/views/ContactView.vue
+/Users/bacon/Documents/Logiforma/Logiforma/src/router/index.ts
+/Users/bacon/Documents/Logiforma/Logiforma/index.html
+/Users/bacon/Documents/Logiforma/Logiforma/README.md
+/Users/bacon/Documents/Logiforma/Logiforma/company.txt
+/Users/bacon/Documents/Logiforma/Logiforma/CLAUDE.md
+/Users/bacon/Documents/Logiforma/Logiforma/public/robots.txt
+/Users/bacon/Documents/Logiforma/Logiforma/new_designs/screen 1.png
+/Users/bacon/Documents/Logiforma/Logiforma/new_designs/screen 2.png
+/Users/bacon/Documents/Logiforma/Logiforma/new_designs/screen 3.png
+/Users/bacon/Documents/Logiforma/Logiforma/public/favicon/favicon-16x16.png
+/Users/bacon/Documents/Logiforma/Logiforma/public/favicon/android-chrome-192x192.png
+/Users/bacon/Documents/Logiforma/Logiforma/public/favicon/apple-touch-icon.png
+/Users/bacon/Documents/Logiforma/Logiforma/public/favicon/android-chrome-512x512.png
+/Users/bacon/Documents/Logiforma/Logiforma/public/favicon/favicon-32x32.png
+/Users/bacon/Documents/Logiforma/Logiforma/public/logo-transparent/Logo - Text - Light.png
+/Users/bacon/Documents/Logiforma/Logiforma/public/logo-transparent/Logo - Dark.png
+/Users/bacon/Documents/Logiforma/Logiforma/public/logo-transparent/Icon - Light.png
+/Users/bacon/Documents/Logiforma/Logiforma/public/logo-transparent/Icon - Dark.png
+/Users/bacon/Documents/Logiforma/Logiforma/public/logo-transparent/Logo - Light.png
+/Users/bacon/Documents/Logiforma/Logiforma/public/logo-transparent/Logo - Text - Dark.png
+/Users/bacon/Documents/Logiforma/Logiforma/public/svgs/initial.svg
+/Users/bacon/Documents/Logiforma/Logiforma/public/svgs/final.svg
+/Users/bacon/Documents/Logiforma/Logiforma/public/logo-opaque/Logo - Text - Light.png
+/Users/bacon/Documents/Logiforma/Logiforma/public/logo-opaque/Logo - Dark.png
+/Users/bacon/Documents/Logiforma/Logiforma/public/logo-opaque/Icon - Light.png
+/Users/bacon/Documents/Logiforma/Logiforma/public/logo-opaque/Icon - Dark.png
+/Users/bacon/Documents/Logiforma/Logiforma/public/logo-opaque/Logo - Light.png
+/Users/bacon/Documents/Logiforma/Logiforma/public/logo-opaque/Logo - Text - Dark.png
