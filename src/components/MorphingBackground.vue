@@ -3,30 +3,28 @@
  * MorphingBackground.vue
  *
  * A fixed, full-viewport ThreeJS canvas that lives BEHIND all page content.
- * The scene smoothly morphs between three visual states driven by scroll
- * progress (0 → 1):
+ * The scene morphs through a sequence of distinct shapes driven by scroll
+ * progress (0 → 1) on the home page; non-home routes are pinned to a fixed
+ * progress so each page reads as visually distinct.
  *
- *   State A (progress 0.0)  — Glass torus-knot on deep black, chromatic.
- *                             Inspired by `new_designs/screen 1.png`.
- *   State B (progress 0.5)  — Iridescent sphere on warm cream/desert
- *                             backdrop. Inspired by `new_designs/screen 2.png`.
- *   State C (progress 1.0)  — Chrome / liquid-metal torus-knot on dark with
- *                             starfield. Inspired by `new_designs/screen 3.png`.
+ * Sequence (zero-overlap visibility windows):
+ *   rings    p=[0.00..0.18]   — three glass torus rings, hero state
+ *   knotA    p=[0.20..0.48]   — glass torus knot drifting in
+ *   sphere   p=[0.46..0.65]   — iridescent sphere, mid-state
+ *   knotC    p=[0.63..1.00]   — chrome torus knot with starfield
  *
- * Morph implementation notes:
- *   - Two primary meshes (TorusKnot + Sphere) crossfade their scale/opacity.
- *   - Material properties (metalness, roughness, transmission, iridescence,
- *     clearcoat, ior, color) are interpolated each frame between state targets.
- *   - Background color is interpolated through a 3-stop gradient (black →
- *     cream → black) so surrounding content theme reads correctly.
- *   - Starfield points geometry only appears at progress > 0.6.
- *   - All interpolations use smoothed (eased) scroll progress for a creamy feel.
+ * Departing shapes exit by drifting off-axis while the incoming shape blooms
+ * in from a different position — never two shapes overlapping at the same
+ * point in space, so the transition reads as intentional, not glitchy.
  *
  * Performance:
- *   - DPR clamped to min(devicePixelRatio, 1.75).
- *   - On mobile / reduced-power / no-WebGL we render a CSS gradient fallback.
- *   - Pauses rAF loop when document is hidden.
- *   - Disables `prefers-reduced-motion` interactions (still renders static).
+ *   - DPR clamped: 1.0 on mobile, 1.5 on desktop
+ *   - Frame throttled to ~30fps on mobile via delta accumulator
+ *   - `transmission` (the expensive screen-space refraction pass) disabled
+ *     on mobile — metalness + clearcoat fill the visual gap
+ *   - Env map built once and cached across mounts / route changes
+ *   - Pauses rAF loop when document is hidden
+ *   - Geometry resolution adapts to device
  */
 import { ref, onMounted, onBeforeUnmount, watch } from 'vue'
 import { useRoute } from 'vue-router'
@@ -39,73 +37,82 @@ const supportsWebGL = ref(true)
 /**
  * Fixed morph progress for each non-home route.
  * Home uses scroll-driven progress; all others freeze at a distinctive state.
+ * Tuned so each page lands inside one shape's "stable" window, not a transition.
  */
 const ROUTE_PROGRESS: Record<string, number> = {
   '/': -1,          // special: scroll-driven
-  '/about': 0.08,   // glass torus, dark — same feel as hero but slightly shifted
-  '/services': 0.12,// glass torus tilted — dark with strong reflections, good contrast
-  '/pricing': 0.82, // heading into chrome — cooler dark
-  '/contact': 0.92, // almost full chrome / starfield
+  '/about': 0.06,   // rings — structured, layered hero feel
+  '/services': 0.32,// glass knot — technical, refractive
+  '/pricing': 0.55, // iridescent sphere — premium, singular
+  '/contact': 0.85, // chrome knot + stars — bold, finished
 }
 
-// --- Three globals (module-scoped to this component instance) -----------
+// --- Three globals (module-scoped to component instance) -----------------
 let renderer: THREE.WebGLRenderer | null = null
 let scene: THREE.Scene | null = null
 let camera: THREE.PerspectiveCamera | null = null
-let knot: THREE.Mesh | null = null
+let knotA: THREE.Mesh | null = null      // glass knot, p≈0.2..0.48
+let knotC: THREE.Mesh | null = null      // chrome knot, p≈0.63..1.0
 let sphere: THREE.Mesh | null = null
 let starField: THREE.Points | null = null
 let ringGroup: THREE.Group | null = null
-let ringOpacity = 0          // eased ring-group opacity (home hero only)
 let frameId = 0
-let scrollProgress = 0       // raw 0..1 (home only)
-let smoothedProgress = 0     // eased 0..1
-let targetProgress = 0       // route-resolved target
+let scrollProgress = 0
+let smoothedProgress = 0
+let targetProgress = 0
 const clock = new THREE.Clock()
 let visibilityHandler: (() => void) | null = null
 let scrollHandler: (() => void) | null = null
 let prefersReducedMotion = false
 let isMobile = false
+let frameAccumulator = 0
+const MOBILE_FRAME_INTERVAL = 1 / 30  // 30fps cap on mobile
+
+// Mouse parallax: target offsets (-1..1) and smoothed values
+let mouseX = 0
+let mouseY = 0
+let smoothMouseX = 0
+let smoothMouseY = 0
+let mouseHandler: ((e: MouseEvent) => void) | null = null
+
+// --- Module-level env map cache (survives component remounts) ------------
+let cachedEnvMap: THREE.Texture | null = null
 
 // --- Color palette per state (linearized via Color) ---------------------
 const BG_A = new THREE.Color('#050505') // deep black for hero
-const BG_B = new THREE.Color('#e9e3d6') // warm cream / desert
-const BG_C = new THREE.Color('#0a0a0f') // near-black w/ slight cool tint
+const BG_B = new THREE.Color('#060914') // deep navy — readable, dark UI-compatible
+const BG_C = new THREE.Color('#0a0a0f') // near-black with cool tint
 
-const MAT_A_COLOR = new THREE.Color('#cfd6dd') // pale steel tint (glass)
-const MAT_B_COLOR = new THREE.Color('#ffffff') // bubble
+const MAT_A_COLOR = new THREE.Color('#cfd6dd') // pale steel (glass)
+const MAT_B_COLOR = new THREE.Color('#ffffff') // sphere
 const MAT_C_COLOR = new THREE.Color('#d8d8d8') // chrome
 
-/**
- * Compute scroll progress as a value 0..1 spanning the total document height.
- */
-function computeScrollProgress(): number {
-  const doc = document.documentElement
-  const max = doc.scrollHeight - window.innerHeight
-  if (max <= 0) return 0
-  return Math.min(1, Math.max(0, window.scrollY / max))
-}
-
-/**
- * Linear interpolation helper.
- */
+// --- Math helpers --------------------------------------------------------
 function lerp(a: number, b: number, t: number): number {
   return a + (b - a) * t
 }
 
-/**
- * Smoothstep ease for nicer morph feel.
- */
+function clamp01(x: number): number {
+  return Math.min(1, Math.max(0, x))
+}
+
 function smoothstep(t: number): number {
-  return t * t * (3 - 2 * t)
+  const x = clamp01(t)
+  return x * x * (3 - 2 * x)
 }
 
 /**
- * Interpolate a value across three keyframe states (A, B, C) where:
- *   p = 0   -> A
- *   p = 0.5 -> B
- *   p = 1.0 -> C
+ * Visibility envelope: returns 1 inside [fadeInEnd, fadeOutStart], smoothly
+ * ramping from 0 over [start, fadeInEnd] and back to 0 over [fadeOutStart, end].
+ * Returns exactly 0 outside [start, end] so we can skip rendering entirely.
  */
+function envelope(p: number, start: number, fadeInEnd: number, fadeOutStart: number, end: number): number {
+  if (p <= start || p >= end) return 0
+  if (p < fadeInEnd) return smoothstep((p - start) / (fadeInEnd - start))
+  if (p > fadeOutStart) return smoothstep((end - p) / (end - fadeOutStart))
+  return 1
+}
+
 function lerp3(a: number, b: number, c: number, p: number): number {
   if (p < 0.5) return lerp(a, b, smoothstep(p / 0.5))
   return lerp(b, c, smoothstep((p - 0.5) / 0.5))
@@ -119,14 +126,59 @@ function lerp3Color(out: THREE.Color, a: THREE.Color, b: THREE.Color, c: THREE.C
   }
 }
 
+function computeScrollProgress(): number {
+  const doc = document.documentElement
+  const max = doc.scrollHeight - window.innerHeight
+  if (max <= 0) return 0
+  return clamp01(window.scrollY / max)
+}
+
 /**
- * Build a simple procedural starfield (used most prominently in State C).
+ * Build the cached environment map once. Subsequent calls return the cache.
  */
+function getEnvironmentMap(r: THREE.WebGLRenderer): THREE.Texture | null {
+  if (cachedEnvMap) return cachedEnvMap
+  const size = 256
+  const c = document.createElement('canvas')
+  c.width = size * 2
+  c.height = size
+  const ctx = c.getContext('2d')
+  if (!ctx) return null
+  const grad = ctx.createLinearGradient(0, 0, 0, size)
+  grad.addColorStop(0, '#ffffff')
+  grad.addColorStop(0.45, '#bcbcc6')
+  grad.addColorStop(0.55, '#3a3a44')
+  grad.addColorStop(1.0, '#050505')
+  ctx.fillStyle = grad
+  ctx.fillRect(0, 0, size * 2, size)
+  for (let i = 0; i < 6; i++) {
+    const cx = Math.random() * size * 2
+    const cy = Math.random() * size
+    const rr = 20 + Math.random() * 60
+    const radial = ctx.createRadialGradient(cx, cy, 0, cx, cy, rr)
+    radial.addColorStop(0, 'rgba(255,220,180,0.9)')
+    radial.addColorStop(1, 'rgba(255,220,180,0)')
+    ctx.fillStyle = radial
+    ctx.beginPath()
+    ctx.arc(cx, cy, rr, 0, Math.PI * 2)
+    ctx.fill()
+  }
+  const tex = new THREE.CanvasTexture(c)
+  tex.mapping = THREE.EquirectangularReflectionMapping
+  tex.colorSpace = THREE.SRGBColorSpace
+
+  const pmrem = new THREE.PMREMGenerator(r)
+  const envRT = pmrem.fromEquirectangular(tex)
+  tex.dispose()
+  pmrem.dispose()
+  cachedEnvMap = envRT.texture
+  return cachedEnvMap
+}
+
 function buildStarfield(): THREE.Points {
-  const count = 1200
+  const count = isMobile ? 600 : 1200
   const positions = new Float32Array(count * 3)
   for (let i = 0; i < count; i++) {
-    // Sphere-distributed stars, biased toward the camera distance
     const r = 30 + Math.random() * 70
     const theta = Math.random() * Math.PI * 2
     const phi = Math.acos(2 * Math.random() - 1)
@@ -148,8 +200,17 @@ function buildStarfield(): THREE.Points {
 }
 
 /**
- * Initialize Three scene, meshes, lights, and start render loop.
+ * Build a torus-knot mesh with the given material params. p=2, q=1 produces
+ * the wide, graceful loops from the brand design (vs the star-pretzel p/q=2/3).
  */
+function buildKnot(matParams: THREE.MeshPhysicalMaterialParameters): THREE.Mesh {
+  const tubular = isMobile ? 128 : 256
+  const radial = isMobile ? 16 : 28
+  const geom = new THREE.TorusKnotGeometry(1.5, 0.50, tubular, radial, 2, 1)
+  const mat = new THREE.MeshPhysicalMaterial(matParams)
+  return new THREE.Mesh(geom, mat)
+}
+
 function initScene(canvas: HTMLCanvasElement) {
   const w = window.innerWidth
   const h = window.innerHeight
@@ -160,7 +221,7 @@ function initScene(canvas: HTMLCanvasElement) {
     alpha: false,
     powerPreference: 'high-performance',
   })
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1.25 : 1.75))
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1.0 : 1.5))
   renderer.setSize(w, h, false)
   renderer.toneMapping = THREE.ACESFilmicToneMapping
   renderer.toneMappingExposure = 1.0
@@ -173,7 +234,7 @@ function initScene(canvas: HTMLCanvasElement) {
   camera.position.set(0, 0, 7)
   camera.lookAt(0, 0, 0)
 
-  // Lighting — physically based to flatter MeshPhysicalMaterial
+  // Lighting
   const hemi = new THREE.HemisphereLight(0xffffff, 0x222233, 0.65)
   scene.add(hemi)
 
@@ -185,44 +246,53 @@ function initScene(canvas: HTMLCanvasElement) {
   rimLight.position.set(-6, -3, -4)
   scene.add(rimLight)
 
-  // Torus knot — geometry tuned to match screen 1.png open glass loop
-  // p=2, q=1 creates wider, graceful sweeping loops vs the star-pretzel of p=2,q=3
-  const knotGeom = new THREE.TorusKnotGeometry(
-    1.5,   // radius — larger, fills the viewport
-    0.50,  // tube — thicker for glass refraction effect
-    isMobile ? 200 : 320, // tubularSegments
-    isMobile ? 20 : 32,   // radialSegments
-    2,     // p — 2 loops
-    1      // q — 1 wind (open, oval loops like screen 1.png)
-  )
-  const knotMat = new THREE.MeshPhysicalMaterial({
+  // Glass knot — visible mid-early. On mobile, transmission is the single
+  // most expensive feature in Three.js; substitute high roughness inversion
+  // + iridescence for a similar refractive look at a fraction of the cost.
+  knotA = buildKnot({
     color: MAT_A_COLOR.clone(),
-    metalness: 0.0,
-    roughness: 0.05,
-    transmission: 1.0,   // glass-like to start
-    thickness: 1.2,
+    metalness: isMobile ? 0.25 : 0.0,
+    roughness: isMobile ? 0.15 : 0.05,
+    transmission: isMobile ? 0.0 : 1.0,
+    thickness: isMobile ? 0.0 : 1.2,
     ior: 1.5,
     attenuationDistance: 5,
     clearcoat: 1.0,
     clearcoatRoughness: 0.05,
-    iridescence: 0.0,
+    iridescence: isMobile ? 0.4 : 0.1,
     iridescenceIOR: 1.3,
     transparent: true,
+    opacity: 0,
     side: THREE.DoubleSide,
     envMapIntensity: 1.2,
   })
-  knot = new THREE.Mesh(knotGeom, knotMat)
-  knot.scale.setScalar(1.4)
-  scene.add(knot)
+  knotA.scale.setScalar(1.4)
+  scene.add(knotA)
 
-  // --- Secondary subject: iridescent sphere (used at State B) ------------
-  const sphereGeom = new THREE.SphereGeometry(1.0, isMobile ? 64 : 128, isMobile ? 48 : 96)
+  // Chrome knot — visible late. Pure metalness, no transmission ever.
+  knotC = buildKnot({
+    color: MAT_C_COLOR.clone(),
+    metalness: 1.0,
+    roughness: 0.08,
+    clearcoat: 0.7,
+    clearcoatRoughness: 0.1,
+    transparent: true,
+    opacity: 0,
+    envMapIntensity: 1.6,
+  })
+  knotC.scale.setScalar(1.15)
+  scene.add(knotC)
+
+  // Iridescent sphere
+  const sphereSegW = isMobile ? 48 : 96
+  const sphereSegH = isMobile ? 32 : 64
+  const sphereGeom = new THREE.SphereGeometry(1.0, sphereSegW, sphereSegH)
   const sphereMat = new THREE.MeshPhysicalMaterial({
     color: MAT_B_COLOR.clone(),
-    metalness: 0.0,
-    roughness: 0.05,
-    transmission: 0.9,
-    thickness: 1.0,
+    metalness: isMobile ? 0.3 : 0.0,
+    roughness: isMobile ? 0.15 : 0.05,
+    transmission: isMobile ? 0.0 : 0.9,
+    thickness: isMobile ? 0.0 : 1.0,
     ior: 1.4,
     clearcoat: 1.0,
     clearcoatRoughness: 0.0,
@@ -234,208 +304,190 @@ function initScene(canvas: HTMLCanvasElement) {
     envMapIntensity: 1.6,
   })
   sphere = new THREE.Mesh(sphereGeom, sphereMat)
-  sphere.scale.setScalar(0.01) // hidden at start
+  sphere.scale.setScalar(1.0)
   scene.add(sphere)
 
-  // --- Ring group (home hero, State A) — multiple overlapping glass torus rings
-  // Inspired by screen 1.png: 3 rings at different tilt angles & radii.
+  // Ring group — three offset rings, home hero state only.
   ringGroup = new THREE.Group()
   ringGroup.position.set(1.4, 0, 0)
   const ringDefs = [
     { r: 2.0, tube: 0.34, rx: 0,              ry: 0,             rz: 0 },
-    { r: 1.6, tube: 0.32, rx: Math.PI / 3.5,  ry: Math.PI / 5,  rz: 0 },
+    { r: 1.6, tube: 0.32, rx: Math.PI / 3.5,  ry: Math.PI / 5,   rz: 0 },
     { r: 2.4, tube: 0.36, rx: -Math.PI / 5,   ry: Math.PI / 2.8, rz: Math.PI / 10 },
   ]
+  const ringRadial = isMobile ? 20 : 36
+  const ringTubular = isMobile ? 60 : 100
   for (const rd of ringDefs) {
-    const rg = new THREE.TorusGeometry(rd.r, rd.tube, isMobile ? 24 : 42, isMobile ? 64 : 110)
+    const rg = new THREE.TorusGeometry(rd.r, rd.tube, ringRadial, ringTubular)
     const rm = new THREE.MeshPhysicalMaterial({
       color: new THREE.Color('#c8d2db'),
-      metalness: 0.1,
-      roughness: 0.04,
-      transmission: 0.98,
-      thickness: 1.1,
+      metalness: isMobile ? 0.3 : 0.1,
+      roughness: isMobile ? 0.15 : 0.04,
+      transmission: isMobile ? 0.0 : 0.98,
+      thickness: isMobile ? 0.0 : 1.1,
       ior: 1.52,
       clearcoat: 1.0,
       clearcoatRoughness: 0.03,
-      iridescence: 0.25,
+      iridescence: isMobile ? 0.4 : 0.25,
       iridescenceIOR: 1.3,
       transparent: true,
       opacity: 0,
       side: THREE.DoubleSide,
       envMapIntensity: 1.5,
     })
-    const rm_mesh = new THREE.Mesh(rg, rm)
-    rm_mesh.rotation.set(rd.rx, rd.ry, rd.rz)
-    ringGroup.add(rm_mesh)
+    const ringMesh = new THREE.Mesh(rg, rm)
+    ringMesh.rotation.set(rd.rx, rd.ry, rd.rz)
+    ringGroup.add(ringMesh)
   }
   scene.add(ringGroup)
 
-  // --- Star field (State C) ---------------------------------------------
   starField = buildStarfield()
   scene.add(starField)
 
-  // Simple procedural environment map for reflections (uses RoomEnvironment-
-  // like pmrem via a quick CubeTexture from canvas would be heavier; we use
-  // a synthetic gradient rendered into an equirect texture)
-  buildEnvironment()
+  const env = getEnvironmentMap(renderer)
+  if (env) scene.environment = env
 }
 
 /**
- * Generate a soft procedural environment texture so the physical material
- * has something to reflect (avoids pulling RoomEnvironment / heavy assets).
- */
-function buildEnvironment() {
-  if (!scene || !renderer) return
-  const size = 256
-  const c = document.createElement('canvas')
-  c.width = size * 2
-  c.height = size
-  const ctx = c.getContext('2d')
-  if (!ctx) return
-  const grad = ctx.createLinearGradient(0, 0, 0, size)
-  grad.addColorStop(0, '#ffffff')
-  grad.addColorStop(0.45, '#bcbcc6')
-  grad.addColorStop(0.55, '#3a3a44')
-  grad.addColorStop(1.0, '#050505')
-  ctx.fillStyle = grad
-  ctx.fillRect(0, 0, size * 2, size)
-  // sprinkle a few warm highlights
-  for (let i = 0; i < 6; i++) {
-    const cx = Math.random() * size * 2
-    const cy = Math.random() * size
-    const r = 20 + Math.random() * 60
-    const radial = ctx.createRadialGradient(cx, cy, 0, cx, cy, r)
-    radial.addColorStop(0, 'rgba(255,220,180,0.9)')
-    radial.addColorStop(1, 'rgba(255,220,180,0)')
-    ctx.fillStyle = radial
-    ctx.beginPath()
-    ctx.arc(cx, cy, r, 0, Math.PI * 2)
-    ctx.fill()
-  }
-  const tex = new THREE.CanvasTexture(c)
-  tex.mapping = THREE.EquirectangularReflectionMapping
-  tex.colorSpace = THREE.SRGBColorSpace
-
-  const pmrem = new THREE.PMREMGenerator(renderer)
-  const envRT = pmrem.fromEquirectangular(tex)
-  scene.environment = envRT.texture
-  tex.dispose()
-  pmrem.dispose()
-}
-
-/**
- * The main per-frame update — morph everything based on smoothed scroll.
+ * Per-frame update. Each shape has its own visibility envelope (no overlap)
+ * and its own exit trajectory so transitions read as motion, not crossfade.
  */
 function tick() {
   if (!renderer || !scene || !camera) return
   frameId = requestAnimationFrame(tick)
 
-  // Ease toward the route-resolved target progress
+  const dt = clock.getDelta()
+
+  // Frame throttle on mobile (skip ~half of frames to hit 30fps)
+  if (isMobile) {
+    frameAccumulator += dt
+    if (frameAccumulator < MOBILE_FRAME_INTERVAL) return
+    frameAccumulator = 0
+  }
+
   const isHome = route.path === '/'
   if (isHome) targetProgress = scrollProgress
   smoothedProgress += (targetProgress - smoothedProgress) * 0.08
 
   const p = smoothedProgress
-  const dt = clock.getDelta()
   const t = clock.elapsedTime
 
-  // ----- Ring group opacity (home only, fades out as scroll increases) ----
-  const ringTarget = isHome ? Math.max(0, 1 - p / 0.28) : 0
-  ringOpacity += (ringTarget - ringOpacity) * 0.07
-
-  // ----- Background color crossfade ----
+  // ----- Background ----
   if (scene.background instanceof THREE.Color) {
     lerp3Color(scene.background, BG_A, BG_B, BG_C, p)
   }
 
-  // ----- Camera subtle dolly per state ----
-  const camZ = lerp3(7, 6, 8, p)
-  const camY = lerp3(0, 0.4, -0.2, p)
-  camera.position.x += (0 - camera.position.x) * 0.1
+  // ----- Camera with mouse parallax ----
+  smoothMouseX += (mouseX - smoothMouseX) * 0.04
+  smoothMouseY += (mouseY - smoothMouseY) * 0.04
+  const parallaxX = smoothMouseX * 0.6
+  const parallaxY = smoothMouseY * 0.4
+  const camZ = lerp3(7, 6.5, 8, p)
+  const camY = lerp3(0, 0.2, -0.2, p) + parallaxY
+  camera.position.x += (parallaxX - camera.position.x) * 0.1
   camera.position.y += (camY - camera.position.y) * 0.1
   camera.position.z += (camZ - camera.position.z) * 0.1
   camera.lookAt(0, 0, 0)
 
-  // ----- Knot transform / material morph (visible in A & C, fades in B) ----
-  if (knot) {
-    const mat = knot.material as THREE.MeshPhysicalMaterial
-    // visibility envelope: peak at A (1.0), dip at B (0.15), peak at C (1.0)
-    // On home page, knot fades in as the rings fade out (first 25% of scroll)
-    const knotFadeIn = isHome ? smoothstep(Math.min(1, p / 0.25)) : 1.0
-    const knotPresence = lerp3(1.0, 0.0, 1.0, p) * knotFadeIn
-    const baseScale = lerp3(1.45, 0.7, 1.15, p)
-    knot.scale.setScalar(baseScale * Math.max(knotPresence, 0.001))
+  // ===================================================================
+  // Visibility envelopes (zero-overlap windows; max 2% crossfade region)
+  // ===================================================================
+  // Rings start at negative p so they're fully visible at p=0 (home top, no scroll).
+  // KnotC extends past p=1 so it's fully visible at p=1 (home bottom).
+  const vRings  = envelope(p, -0.10, -0.02, 0.14, 0.20)
+  const vKnotA  = envelope(p,  0.18,  0.26, 0.42, 0.48)
+  const vSphere = envelope(p,  0.46,  0.54, 0.58, 0.66)
+  const vKnotC  = envelope(p,  0.64,  0.74, 1.10, 1.20)
 
-    // Drift across screen — right in A, off-screen mid in B, slight left in C
-    const targetX = lerp3(1.6, 0.0, -0.2, p)
-    const targetY = lerp3(0.2, 4.0, -0.1, p)
-    knot.position.x += (targetX - knot.position.x) * 0.06
-    knot.position.y += (targetY - knot.position.y) * 0.06
-
-    // Rotation — continuous slow spin + state-driven tilt
-    knot.rotation.x += dt * lerp(0.18, 0.06, p)
-    knot.rotation.y += dt * lerp(0.22, 0.10, p)
-    knot.rotation.z = lerp3(0.0, 0.3, -0.2, p)
-
-    // Material morph A (glass) -> B (iridescent) -> C (chrome)
-    mat.metalness = lerp3(0.0, 0.0, 1.0, p)
-    mat.roughness = lerp3(0.05, 0.2, 0.08, p)
-    mat.transmission = lerp3(1.0, 0.6, 0.0, p)
-    mat.thickness = lerp3(1.2, 0.8, 0.0, p)
-    mat.ior = lerp3(1.5, 1.4, 1.0, p)
-    mat.iridescence = lerp3(0.0, 0.6, 0.0, p)
-    mat.clearcoat = lerp3(1.0, 0.6, 0.7, p)
-    mat.clearcoatRoughness = lerp3(0.04, 0.2, 0.1, p)
-    mat.envMapIntensity = lerp3(1.2, 1.4, 1.6, p)
-    lerp3Color(mat.color, MAT_A_COLOR, MAT_B_COLOR, MAT_C_COLOR, p)
-    mat.opacity = Math.max(knotPresence, 0.001)
-    mat.needsUpdate = false // physical material handles updates internally
-  }
-
-  // ----- Ring group (home hero) ----
+  // ----- Ring group: exits by drifting right and shrinking ----
   if (ringGroup) {
-    ringGroup.position.y = Math.sin(t * 0.45) * 0.12
-    ringGroup.rotation.y += dt * 0.035
-    let ri = 0
-    for (const child of ringGroup.children) {
-      const rm = child as THREE.Mesh
-      rm.rotation.x += dt * (0.12 + ri * 0.06)
-      rm.rotation.y += dt * (0.09 + ri * 0.04)
-      ;(rm.material as THREE.MeshPhysicalMaterial).opacity = ringOpacity
-      ri++
+    ringGroup.visible = vRings > 0.001
+    if (ringGroup.visible) {
+      const exitX = lerp(1.4, 4.0, 1 - vRings)
+      const exitY = Math.sin(t * 0.45) * 0.12
+      ringGroup.position.x = exitX
+      ringGroup.position.y = exitY
+      ringGroup.rotation.y += dt * 0.035
+      let ri = 0
+      for (const child of ringGroup.children) {
+        const rm = child as THREE.Mesh
+        rm.rotation.x += dt * (0.12 + ri * 0.06)
+        rm.rotation.y += dt * (0.09 + ri * 0.04)
+        ;(rm.material as THREE.MeshPhysicalMaterial).opacity = vRings
+        ri++
+      }
     }
   }
 
-  // ----- Sphere transform / fade ----
-  if (sphere) {
-    const mat = sphere.material as THREE.MeshPhysicalMaterial
-    // peak presence at midpoint (B)
-    const sPresence = Math.max(0, 1 - Math.abs(p - 0.5) * 2)
-    const scale = lerp(0.01, 1.0, smoothstep(sPresence))
-    sphere.scale.setScalar(scale)
-    sphere.position.x = lerp(-2.5, 2.5, smoothstep(p)) * 0.0 // keep centered
-    sphere.position.y = Math.sin(t * 0.6) * 0.08 // gentle float
-    sphere.rotation.y += dt * 0.15
-    mat.opacity = smoothstep(sPresence)
+  // ----- Glass knot: enters from upper-right, exits to lower-left ----
+  if (knotA) {
+    knotA.visible = vKnotA > 0.001
+    if (knotA.visible) {
+      const mat = knotA.material as THREE.MeshPhysicalMaterial
+      // Enter from upper-right at vKnotA=0, settle center at 1, drift left as it exits
+      const localT = (p - 0.18) / (0.48 - 0.18) // 0..1 across active range
+      const driftX = lerp(2.5, -1.5, smoothstep(localT))
+      const driftY = lerp(1.5, -0.8, smoothstep(localT))
+      knotA.position.x += (driftX - knotA.position.x) * 0.06
+      knotA.position.y += (driftY - knotA.position.y) * 0.06
+
+      knotA.rotation.x += dt * 0.18
+      knotA.rotation.y += dt * 0.22
+
+      mat.opacity = vKnotA
+      mat.envMapIntensity = 1.2
+    }
   }
 
-  // ----- Starfield ----
+  // ----- Sphere: blooms from center, exits by drifting up ----
+  if (sphere) {
+    sphere.visible = vSphere > 0.001
+    if (sphere.visible) {
+      const mat = sphere.material as THREE.MeshPhysicalMaterial
+      // Sphere stays near center, slight float
+      const driftY = lerp(-0.5, 0.8, smoothstep((p - 0.46) / 0.20)) + Math.sin(t * 0.6) * 0.08
+      sphere.position.x = 0
+      sphere.position.y += (driftY - sphere.position.y) * 0.08
+      // Bloom in via scale (only when actively transitioning, not a hack)
+      const bloomScale = lerp(0.5, 1.2, smoothstep(vSphere))
+      sphere.scale.setScalar(bloomScale)
+      sphere.rotation.y += dt * 0.15
+      mat.opacity = vSphere
+    }
+  }
+
+  // ----- Chrome knot: enters from lower-right, settles center ----
+  if (knotC) {
+    knotC.visible = vKnotC > 0.001
+    if (knotC.visible) {
+      const mat = knotC.material as THREE.MeshPhysicalMaterial
+      const localT = clamp01((p - 0.64) / 0.36)
+      const driftX = lerp(2.0, -0.2, smoothstep(localT))
+      const driftY = lerp(-1.5, -0.1, smoothstep(localT))
+      knotC.position.x += (driftX - knotC.position.x) * 0.06
+      knotC.position.y += (driftY - knotC.position.y) * 0.06
+
+      knotC.rotation.x += dt * 0.10
+      knotC.rotation.y += dt * 0.14
+      knotC.rotation.z = -0.2
+
+      mat.opacity = vKnotC
+    }
+  }
+
+  // ----- Starfield (chrome-knot era only) ----
   if (starField) {
     const mat = starField.material as THREE.PointsMaterial
-    // Stars only really visible in State C
     mat.opacity = smoothstep(Math.max(0, (p - 0.55) / 0.45))
+    starField.visible = mat.opacity > 0.001
     starField.rotation.y += dt * 0.01
     starField.rotation.x += dt * 0.005
   }
 
   renderer.render(scene, camera)
-  // Expose progress to CSS for potential theme use
   document.documentElement.style.setProperty('--morph-p', p.toFixed(3))
 }
 
-/**
- * Handle window resize.
- */
 function onResize() {
   if (!renderer || !camera) return
   const w = window.innerWidth
@@ -449,15 +501,12 @@ function onScroll() {
   scrollProgress = computeScrollProgress()
 }
 
-/** Resolve the target progress for the current route. */
 function updateTargetProgress() {
   const path = route.path
   const fixed = ROUTE_PROGRESS[path]
   if (fixed === undefined) {
-    // Unknown route — default to dark glass look
-    targetProgress = 0.05
+    targetProgress = 0.06
   } else if (fixed === -1) {
-    // Home: scroll-driven, target is live scroll progress
     targetProgress = scrollProgress
   } else {
     targetProgress = fixed
@@ -493,13 +542,21 @@ onMounted(() => {
   window.addEventListener('scroll', scrollHandler, { passive: true })
   window.addEventListener('resize', onResize)
 
-  // Pause when tab hidden to save CPU/GPU
+  // Mouse parallax — disabled on touch / reduced-motion
+  if (!isMobile && !prefersReducedMotion) {
+    mouseHandler = (e: MouseEvent) => {
+      mouseX = (e.clientX / window.innerWidth) * 2 - 1
+      mouseY = -((e.clientY / window.innerHeight) * 2 - 1)
+    }
+    window.addEventListener('mousemove', mouseHandler, { passive: true })
+  }
+
   visibilityHandler = () => {
     if (document.hidden) {
       if (frameId) cancelAnimationFrame(frameId)
       frameId = 0
     } else if (!frameId) {
-      clock.getDelta() // reset delta
+      clock.getDelta()
       tick()
     }
   }
@@ -507,12 +564,19 @@ onMounted(() => {
 
   onScroll()
   updateTargetProgress()
-  tick()
 
-  // React to route changes
+  if (prefersReducedMotion) {
+    // Render a single static frame, no animation loop
+    smoothedProgress = targetProgress
+    tick()
+    if (frameId) cancelAnimationFrame(frameId)
+    frameId = 0
+  } else {
+    tick()
+  }
+
   watch(() => route.path, () => {
     updateTargetProgress()
-    // Scroll to top transition: reset smoothedProgress toward new target
     window.scrollTo(0, 0)
   })
 })
@@ -520,10 +584,10 @@ onMounted(() => {
 onBeforeUnmount(() => {
   if (frameId) cancelAnimationFrame(frameId)
   if (scrollHandler) window.removeEventListener('scroll', scrollHandler)
+  if (mouseHandler) window.removeEventListener('mousemove', mouseHandler)
   window.removeEventListener('resize', onResize)
   if (visibilityHandler) document.removeEventListener('visibilitychange', visibilityHandler)
 
-  // Dispose Three resources
   if (ringGroup) {
     ringGroup.children.forEach((child) => {
       const m = child as THREE.Mesh
@@ -532,24 +596,30 @@ onBeforeUnmount(() => {
     })
     ringGroup = null
   }
-  if (knot) {
-    knot.geometry.dispose()
-    ;(knot.material as THREE.Material).dispose()
+  if (knotA) {
+    knotA.geometry.dispose()
+    ;(knotA.material as THREE.Material).dispose()
+    knotA = null
+  }
+  if (knotC) {
+    knotC.geometry.dispose()
+    ;(knotC.material as THREE.Material).dispose()
+    knotC = null
   }
   if (sphere) {
     sphere.geometry.dispose()
     ;(sphere.material as THREE.Material).dispose()
+    sphere = null
   }
   if (starField) {
     starField.geometry.dispose()
     ;(starField.material as THREE.Material).dispose()
+    starField = null
   }
+  // Note: cachedEnvMap is intentionally kept across mounts.
   renderer?.dispose()
   scene = null
   camera = null
-  knot = null
-  sphere = null
-  starField = null
   renderer = null
 })
 </script>
@@ -585,8 +655,8 @@ onBeforeUnmount(() => {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(1200px 800px at 80% 10%, rgba(180, 200, 220, 0.25), transparent 60%),
-    radial-gradient(900px 700px at 30% 60%, rgba(220, 200, 170, 0.18), transparent 60%),
-    linear-gradient(180deg, #050505 0%, #1a1816 50%, #050507 100%);
+    radial-gradient(1200px 800px at 80% 10%, rgba(120, 140, 180, 0.18), transparent 60%),
+    radial-gradient(900px 700px at 30% 60%, rgba(80, 100, 160, 0.14), transparent 60%),
+    linear-gradient(180deg, #050505 0%, #060914 50%, #0a0a0f 100%);
 }
 </style>

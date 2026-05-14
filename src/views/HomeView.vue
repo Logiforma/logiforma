@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { RouterLink } from 'vue-router'
-import HeroAnimation from '@/components/HeroAnimation.vue'
 
 const stats = [
   { value: '$8K+', label: 'Monthly savings per client' },
